@@ -490,7 +490,7 @@ namespace KingSurvivalGame
             }
         }
 
-        // Part for refactoring. Author: ???
+        // Part for refactoring. Author: Kaloqn
         static void checkForKingExit(int currentKingXAxe)
         {
             if (currentKingXAxe == 2)
