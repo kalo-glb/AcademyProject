@@ -7,7 +7,7 @@ namespace KingSurvivalGame
 {
     class KingSurvivalGame : BaseGame
     {
-        // Part for refactoring. Author: ???
+        // Part for refactoring. Author: Georgi Georgiev
         static bool check(int[] positionCoodinates)
         {
             int a = positionCoodinates[0];
