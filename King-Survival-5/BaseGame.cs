@@ -28,7 +28,7 @@ namespace King
             { 2, 4 }, { 2, 18 }, { 9, 4 }, { 9, 18 }
         };
 
-        protected static int[] poziciqCar = { 9, 10 };
+        protected static int[] kingPosition = { 9, 10 };
 
         protected static bool[,] pawnExistingMoves = 
         {
@@ -49,7 +49,7 @@ namespace King
         protected static int counter = 0;
 
         protected static bool flag3 = false;
-        protected static int[,] poziciqPeshki = 
+        protected static int[,] pawnsPositions = 
         {
             { 2, 4 }, { 2, 8 }, { 2, 12 }, { 2, 16 }
         };

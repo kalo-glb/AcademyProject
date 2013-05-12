@@ -273,220 +273,226 @@ namespace KingSurvivalGame
             return true;
         }
 
-        // Part for refactoring. Author: ???
-        static bool proverkaIProcess(string checkedInput)
+        // Part for refactoring. Author: vlado
+        internal static bool proverkaIProcess(string command)
         {
-            bool commandNameIsOK = proverka2(checkedInput);
-            if (commandNameIsOK)
+            bool isValidCommand = proverka2(command);
+            if (isValidCommand)
             {
-                char startLetter = checkedInput[0];
-                switch (startLetter)
+                char figureLetter = command[0];
+                switch (figureLetter)
                 {
                     case 'A':
 
-                        if (checkedInput[2] == 'L')
+                        if (command[2] == 'L')
                         {
-                            int[] oldCoordinates = new int[2];
-                            oldCoordinates[0] = poziciqPeshki[0, 0];
+                            int[] pawnOldPosition = new int[2];
+                            pawnOldPosition[0] = pawnsPositions[0, 0];
+                            pawnOldPosition[1] = pawnsPositions[0, 1];
 
-                            oldCoordinates[1] = poziciqPeshki[0, 1];
+                            int[] pawnNextPosition = new int[2];
+                            pawnNextPosition = CheckNextPownPosition(pawnOldPosition, 'L', 'A');
 
-                            int[] coords = new int[2];
-                            coords = CheckNextPownPosition(oldCoordinates, 'L', 'A');
-                            if (coords != null)
+                            if (pawnNextPosition != null)
                             {
-                                poziciqPeshki[0, 0] = coords[0];
-                                poziciqPeshki[0, 1] = coords[1];
+                                pawnsPositions[0, 0] = pawnNextPosition[0];
+                                pawnsPositions[0, 1] = pawnNextPosition[1];
                             }
                         }
                         else
                         {
-                            //=='D'
-                            int[] oldCoordinates = new int[2];
-                            oldCoordinates[0] = poziciqPeshki[0, 0];
+                            int[] pawnOldPosition = new int[2];
+                            pawnOldPosition[0] = pawnsPositions[0, 0];
+                            pawnOldPosition[1] = pawnsPositions[0, 1];
 
-                            oldCoordinates[1] = poziciqPeshki[0, 1];
-                            int[] coords = new int[2];
+                            int[] pawnNewPosition = new int[2];
+                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'R', 'A');
 
-                            coords = CheckNextPownPosition(oldCoordinates, 'R', 'A');
-                            if (coords != null)
+                            if (pawnNewPosition != null)
                             {
-                                poziciqPeshki[0, 0] = coords[0];
-
-                                poziciqPeshki[0, 1] = coords[1];
+                                pawnsPositions[0, 0] = pawnNewPosition[0];
+                                pawnsPositions[0, 1] = pawnNewPosition[1];
                             }
                         }
-                        return true;
 
+                        break;
                     case 'B':
-                        if (checkedInput[2] == 'L')
+                        if (command[2] == 'L')
                         {
-                            int[] oldCoordinates = new int[2];
-                            oldCoordinates[0] = poziciqPeshki[1, 0];
-                            oldCoordinates[1] = poziciqPeshki[1, 1];
+                            int[] pawnOldPosition = new int[2];
+                            pawnOldPosition[0] = pawnsPositions[1, 0];
+                            pawnOldPosition[1] = pawnsPositions[1, 1];
 
-                            int[] coords = new int[2];
+                            int[] pawnNewPosition = new int[2];
+                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'L', 'B');
 
-                            coords = CheckNextPownPosition(oldCoordinates, 'L', 'B');
-                            if (coords != null)
+                            if (pawnNewPosition != null)
                             {
-                                poziciqPeshki[1, 0] = coords[0];
-
-                                poziciqPeshki[1, 1] = coords[1];
+                                pawnsPositions[1, 0] = pawnNewPosition[0];
+                                pawnsPositions[1, 1] = pawnNewPosition[1];
                             }
                         }
                         else
                         {
-                            //=='D'
-                            int[] oldCoordinates = new int[2];
+                            int[] pawnOldPosition = new int[2];
+                            pawnOldPosition[0] = pawnsPositions[1, 0];
+                            pawnOldPosition[1] = pawnsPositions[1, 1];
 
-                            oldCoordinates[0] = poziciqPeshki[1, 0];
+                            int[] pawnNewPosition = new int[2];
+                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'R', 'B');
 
-                            oldCoordinates[1] = poziciqPeshki[1, 1];
-
-                            int[] coords = new int[2];
-                            coords = CheckNextPownPosition(oldCoordinates, 'R', 'B');
-                            if (coords != null)
+                            if (pawnNewPosition != null)
                             {
-                                poziciqPeshki[1, 0] = coords[0];
-
-                                poziciqPeshki[1, 1] = coords[1];
+                                pawnsPositions[1, 0] = pawnNewPosition[0];
+                                pawnsPositions[1, 1] = pawnNewPosition[1];
                             }
                         }
-                        return true;
 
+                        break;
                     case 'C':
-                        if (checkedInput[2] == 'L')
+                        if (command[2] == 'L')
                         {
-                            int[] oldCoordinates = new int[2];
-                            oldCoordinates[0] = poziciqPeshki[2, 0];
+                            int[] pawnOldPosition = new int[2];
+                            pawnOldPosition[0] = pawnsPositions[2, 0];
+                            pawnOldPosition[1] = pawnsPositions[2, 1];
 
-                            oldCoordinates[1] = poziciqPeshki[2, 1];
-                            int[] coords = new int[2];
-                            coords = CheckNextPownPosition(oldCoordinates, 'L', 'C');
-                            if (coords != null)
+                            int[] pawnNewPosition = new int[2];
+                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'L', 'C');
+
+                            if (pawnNewPosition != null)
                             {
-                                poziciqPeshki[2, 0] = coords[0];
-                                poziciqPeshki[2, 1] = coords[1];
+                                pawnsPositions[2, 0] = pawnNewPosition[0];
+                                pawnsPositions[2, 1] = pawnNewPosition[1];
                             }
                         }
                         else
                         {
-                            //=='D'
-                            int[] oldCoordinates = new int[2];
-                            oldCoordinates[0] = poziciqPeshki[2, 0];
-                            oldCoordinates[1] = poziciqPeshki[2, 1];
-                            int[] coords = new int[2];
-                            coords = CheckNextPownPosition(oldCoordinates, 'R', 'C');
-                            if (coords != null)
+                            int[] pawnOldPosition = new int[2];
+                            pawnOldPosition[0] = pawnsPositions[2, 0];
+                            pawnOldPosition[1] = pawnsPositions[2, 1];
+
+                            int[] pawnNewPosition = new int[2];
+                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'R', 'C');
+
+                            if (pawnNewPosition != null)
                             {
-                                poziciqPeshki[1, 0] = coords[0];
-                                poziciqPeshki[1, 1] = coords[1];
+                                pawnsPositions[1, 0] = pawnNewPosition[0];
+                                pawnsPositions[1, 1] = pawnNewPosition[1];
                             }
                         }
-                        return true;
 
+                        break;
                     case 'D':
-                        if (checkedInput[2] == 'L')
+                        if (command[2] == 'L')
                         {
-                            int[] oldCoordinates = new int[2];
-                            oldCoordinates[0] = poziciqPeshki[3, 0];
-                            oldCoordinates[1] = poziciqPeshki[3, 1];
-                            int[] coords = new int[2];
-                            coords = CheckNextPownPosition(oldCoordinates, 'L', 'D');
-                            if (coords != null)
-                            {
-                                poziciqPeshki[3, 0] = coords[0];
-                                poziciqPeshki[3, 1] = coords[1];
-                            }
-                        }
-                        else
-                        {
-                            //=='D'
-                            int[] oldCoordinates = new int[2];
-                            oldCoordinates[0] = poziciqPeshki[3, 0];
-                            oldCoordinates[1] = poziciqPeshki[3, 1];
-                            int[] coords = new int[2];
-                            coords = CheckNextPownPosition(oldCoordinates, 'R', 'D');
-                            if (coords != null)
-                            {
-                                poziciqPeshki[3, 0] = coords[0];
-                                poziciqPeshki[3, 1] = coords[1];
-                            }
-                        }
-                        return true;
+                            int[] pawnOldPosition = new int[2];
+                            pawnOldPosition[0] = pawnsPositions[3, 0];
+                            pawnOldPosition[1] = pawnsPositions[3, 1];
 
-                    case 'K':
-                        if (checkedInput[1] == 'U')
-                        {
-                            if (checkedInput[2] == 'L')
+                            int[] pawnNewPosition = new int[2];
+                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'L', 'D');
+
+                            if (pawnNewPosition != null)
                             {
-                                int[] oldCoordinates = new int[2];
-                                oldCoordinates[0] = poziciqCar[0];
-                                oldCoordinates[1] = poziciqCar[1];
-                                int[] coords = new int[2];
-                                coords = checkNextKingPosition(oldCoordinates, 'U', 'L');
-                                if (coords != null)
-                                {
-                                    poziciqCar[0] = coords[0];
-                                    poziciqCar[1] = coords[1];
-                                }
+                                pawnsPositions[3, 0] = pawnNewPosition[0];
+                                pawnsPositions[3, 1] = pawnNewPosition[1];
                             }
-                            else
-                            {
-                                int[] oldCoordinates = new int[2];
-                                oldCoordinates[0] = poziciqCar[0];
-                                oldCoordinates[1] = poziciqCar[1];
-                                int[] coords = new int[2];
-                                coords = checkNextKingPosition(oldCoordinates, 'U', 'R');
-                                if (coords != null)
-                                {
-                                    poziciqCar[0] = coords[0];
-                                    poziciqCar[1] = coords[1];
-                                }
-                            }
-                            return true;
                         }
                         else
                         {
-                            //=KD_
-                            if (checkedInput[2] == 'L')
+                            int[] pawnOldPosition = new int[2];
+                            pawnOldPosition[0] = pawnsPositions[3, 0];
+                            pawnOldPosition[1] = pawnsPositions[3, 1];
+
+                            int[] pawnNewPosition = new int[2];
+                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'R', 'D');
+
+                            if (pawnNewPosition != null)
                             {
-                                int[] oldCoordinates = new int[2];
-                                oldCoordinates[0] = poziciqCar[0];
-                                oldCoordinates[1] = poziciqCar[1];
-                                int[] coords = new int[2];
-                                coords = checkNextKingPosition(oldCoordinates, 'D', 'L');
-                                if (coords != null)
+                                pawnsPositions[3, 0] = pawnNewPosition[0];
+                                pawnsPositions[3, 1] = pawnNewPosition[1];
+                            }
+                        }
+
+                        break;
+                    case 'K':
+                        if (command[1] == 'U')
+                        {
+                            if (command[2] == 'L')
+                            {
+                                int[] kingOldPosition = new int[2];
+                                kingOldPosition[0] = kingPosition[0];
+                                kingOldPosition[1] = kingPosition[1];
+
+                                int[] kingNewPosition = new int[2];
+                                kingNewPosition = checkNextKingPosition(kingOldPosition, 'U', 'L');
+
+                                if (kingNewPosition != null)
                                 {
-                                    poziciqCar[0] = coords[0];
-                                    poziciqCar[1] = coords[1];
+                                    kingPosition[0] = kingNewPosition[0];
+                                    kingPosition[1] = kingNewPosition[1];
                                 }
                             }
                             else
                             {
-                                //==KDD
-                                int[] oldCoordinates = new int[2];
-                                oldCoordinates[0] = poziciqCar[0];
-                                oldCoordinates[1] = poziciqCar[1];
-                                int[] coords = new int[2];
-                                coords = checkNextKingPosition(oldCoordinates, 'D', 'R');
-                                if (coords != null)
+                                int[] kingOldPosition = new int[2];
+                                kingOldPosition[0] = kingPosition[0];
+                                kingOldPosition[1] = kingPosition[1];
+
+                                int[] kingNewPosition = new int[2];
+                                kingNewPosition = checkNextKingPosition(kingOldPosition, 'U', 'R');
+
+                                if (kingNewPosition != null)
                                 {
-                                    poziciqCar[0] = coords[0];
-                                    poziciqCar[1] = coords[1];
+                                    kingPosition[0] = kingNewPosition[0];
+                                    kingPosition[1] = kingNewPosition[1];
                                 }
                             }
-                            return true;
                         }
+                        else
+                        {
+                            if (command[2] == 'L')
+                            {
+                                int[] kingOldPosition = new int[2];
+                                kingOldPosition[0] = kingPosition[0];
+                                kingOldPosition[1] = kingPosition[1];
+
+                                int[] kingNewPosition = new int[2];
+                                kingNewPosition = checkNextKingPosition(kingOldPosition, 'D', 'L');
+
+                                if (kingNewPosition != null)
+                                {
+                                    kingPosition[0] = kingNewPosition[0];
+                                    kingPosition[1] = kingNewPosition[1];
+                                }
+                            }
+                            else
+                            {
+                                int[] kingOldPosition = new int[2];
+                                kingOldPosition[0] = kingPosition[0];
+                                kingOldPosition[1] = kingPosition[1];
+
+                                int[] kingNewPosition = new int[2];
+                                kingNewPosition = checkNextKingPosition(kingOldPosition, 'D', 'R');
+
+                                if (kingNewPosition != null)
+                                {
+                                    kingPosition[0] = kingNewPosition[0];
+                                    kingPosition[1] = kingNewPosition[1];
+                                }
+                            }
+                        }
+
+                        break;
                     default:
-                        Console.WriteLine("Sorry, there are some errors, but I can't tell you anything! You broked my program!");
-                        return false;
+                        throw new FormatException("The format of the command is not correct!");
                 }
+
+                return true;
             }
             else
             {
-                return false;//message is from other
+                return false;
             }
         }
 
