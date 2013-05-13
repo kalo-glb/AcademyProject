@@ -38,17 +38,17 @@ namespace King
         protected static string[] validKingInputs = { "KUL", "KUR", "KDL", "KDR" };
         protected static bool[] kingExistingMoves = { true, true, true, true };
 
-        protected static string[] a = { "ADL", "ADR" };
+        protected static string[] ValidPawnMovesForA = { "ADL", "ADR" };
 
-        protected static string[] b = { "BDL", "BDR" };
+        protected static string[] ValidPawnMovesForB = { "BDL", "BDR" }; //ValidPawnMovesForD
 
-        protected static string[] c = { "CDL", "CDR" };
+        protected static string[] ValidPawnMovesForC = { "CDL", "CDR" };
 
-        protected static string[] d = { "DDL", "DDR" };
+        protected static string[] ValidPawnMovesForD = { "DDL", "DDR" };
 
-        protected static int counter = 0;
+        protected static int kingsMovesCounter = 0;
 
-        protected static bool flag3 = false;
+        protected static bool gameIsOver = false;
         protected static int[,] pawnsPositions = 
         {
             { 2, 4 }, { 2, 8 }, { 2, 12 }, { 2, 16 }

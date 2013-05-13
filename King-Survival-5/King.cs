@@ -1,8 +1,6 @@
 ﻿using System;
 using King;
 
-// bachka, ne butaj!
-
 namespace KingSurvivalGame
 {
     class KingSurvivalGame : BaseGame
@@ -86,7 +84,7 @@ namespace KingSurvivalGame
 
         static void START(int moveCounter)
         {
-            if (flag3)
+            if (gameIsOver)
             { //igrata svyrshi
                 Console.WriteLine("Game is finished!");
                 return;
@@ -108,7 +106,7 @@ namespace KingSurvivalGame
 
         static bool proverka2(string checkedString)
         {
-            if (counter % 2 == 0)
+            if (kingsMovesCounter % 2 == 0)
             {
                 int[] flag = new int[4];
                 for (int i = 0; i < validKingInputs.Length; i++)
@@ -148,9 +146,9 @@ namespace KingSurvivalGame
                 switch (startLetter)
                 {
                     case 'A':
-                        for (int i = 0; i < a.Length; i++)
+                        for (int i = 0; i < ValidPawnMovesForA.Length; i++)
                         {
-                            string reference = a[i];
+                            string reference = ValidPawnMovesForA[i];
                             int result = checkedString.CompareTo(reference);
                             if (result != 0)
                             {
@@ -177,9 +175,9 @@ namespace KingSurvivalGame
                         return hasAnEqual;
 
                     case 'B':
-                        for (int i = 0; i < b.Length; i++)
+                        for (int i = 0; i < ValidPawnMovesForB.Length; i++)
                         {
-                            string reference = b[i];
+                            string reference = ValidPawnMovesForB[i];
                             int result = checkedString.CompareTo(reference);
                             if (result != 0)
                             {
@@ -205,9 +203,9 @@ namespace KingSurvivalGame
                         }
                         return hasAnEqual;
                     case 'C':
-                        for (int i = 0; i < c.Length; i++)
+                        for (int i = 0; i < ValidPawnMovesForC.Length; i++)
                         {
-                            string reference = c[i];
+                            string reference = ValidPawnMovesForC[i];
                             int result = checkedString.CompareTo(reference);
                             if (result != 0)
                             {
@@ -234,9 +232,9 @@ namespace KingSurvivalGame
                         return hasAnEqual;
 
                     case 'D':
-                        for (int i = 0; i < d.Length; i++)
+                        for (int i = 0; i < ValidPawnMovesForD.Length; i++)
                         {
-                            string reference = d[i];
+                            string reference = ValidPawnMovesForD[i];
                             int result = checkedString.CompareTo(reference);
                             if (result != 0)
                             {
@@ -502,8 +500,8 @@ namespace KingSurvivalGame
             if (currentKingXAxe == 2)
             {
                 Console.WriteLine("End!");
-                Console.WriteLine("King wins in {0} moves!", counter / 2);
-                flag3 = true;
+                Console.WriteLine("King wins in {0} moves!", kingsMovesCounter / 2);
+                gameIsOver = true;
             }
         }
 
@@ -521,7 +519,7 @@ namespace KingSurvivalGame
                     char sign = field[currentCoordinates[0], currentCoordinates[1]];
                     field[currentCoordinates[0], currentCoordinates[1]] = ' ';
                     field[newCoords[0], newCoords[1]] = sign;
-                    counter++;
+                    kingsMovesCounter++;
                     switch (currentPawn)
                     {
                         case 'A':
@@ -626,9 +624,8 @@ namespace KingSurvivalGame
                     }
                     if (allAreFalse)
                     {
-                        flag3 = true;
                         Console.WriteLine("King wins!");
-                        flag3 = true;
+                        gameIsOver = true;
                         return null;
                     }
                     Console.BackgroundColor = ConsoleColor.DarkYellow;
@@ -646,7 +643,7 @@ namespace KingSurvivalGame
                     char sign = field[currentCoordinates[0], currentCoordinates[1]];
                     field[currentCoordinates[0], currentCoordinates[1]] = ' ';
                     field[newCoords[0], newCoords[1]] = sign;
-                    counter++;
+                    kingsMovesCounter++;
                     switch (currentPawn)
                     {
                         case 'A':
@@ -752,9 +749,9 @@ namespace KingSurvivalGame
 
                     if (allAreFalse)
                     {
-                        flag3 = true;
+                        gameIsOver = true;
                         Console.WriteLine("King wins!");
-                        flag3 = true;
+                        gameIsOver = true;
                         return null;
                     }
                     Console.BackgroundColor = ConsoleColor.DarkYellow;
@@ -788,7 +785,7 @@ namespace KingSurvivalGame
                     Console.ResetColor();
                 }
             }
-            START(counter);
+            START(kingsMovesCounter);
         }
 
         static void ProcessPawnSide()
@@ -816,7 +813,7 @@ namespace KingSurvivalGame
                     Console.ResetColor();
                 }
             }
-            START(counter);
+            START(kingsMovesCounter);
         }
 
         static int[] checkNextKingPosition(int[] currentCoordinates, char firstDirection, char secondDirection)
@@ -838,7 +835,7 @@ namespace KingSurvivalGame
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
                         field[newCoords[0], newCoords[1]] = sign;
-                        counter++;
+                        kingsMovesCounter++;
                         for (int i = 0; i < 4; i++)
                         {
                             kingExistingMoves[i] = true;
@@ -859,7 +856,7 @@ namespace KingSurvivalGame
                         }
                         if (allAreFalse)
                         {
-                            flag3 = true;
+                            gameIsOver = true;
                             Console.WriteLine("King loses!");
                             return null;
                         }
@@ -878,7 +875,7 @@ namespace KingSurvivalGame
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
                         field[newCoords[0], newCoords[1]] = sign;
-                        counter++;
+                        kingsMovesCounter++;
                         for (int i = 0; i < 4; i++)
                         {
                             kingExistingMoves[i] = true;
@@ -899,7 +896,7 @@ namespace KingSurvivalGame
                         }
                         if (allAreFalse)
                         {
-                            flag3 = true;
+                            gameIsOver = true;
                             Console.WriteLine("King loses!");
                             return null;
                         }
@@ -921,7 +918,7 @@ namespace KingSurvivalGame
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
                         field[newCoords[0], newCoords[1]] = sign;
-                        counter++;
+                        kingsMovesCounter++;
                         for (int i = 0; i < 4; i++)
                         {
                             kingExistingMoves[i] = true;
@@ -942,7 +939,7 @@ namespace KingSurvivalGame
                         }
                         if (allAreFalse)
                         {
-                            flag3 = true;
+                            gameIsOver = true;
                             Console.WriteLine("King loses!");
                             return null;
                         }
@@ -961,7 +958,7 @@ namespace KingSurvivalGame
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
                         field[newCoords[0], newCoords[1]] = sign;
-                        counter++;
+                        kingsMovesCounter++;
                         for (int i = 0; i < 4; i++)
                         {
                             kingExistingMoves[i] = true;
@@ -982,7 +979,7 @@ namespace KingSurvivalGame
                         }
                         if (allAreFalse)
                         {
-                            flag3 = true;
+                            gameIsOver = true;
                             Console.WriteLine("King loses!");
                             return null;
                         }
@@ -998,7 +995,7 @@ namespace KingSurvivalGame
 
         static void Main()
         {
-            START(counter);
+            START(kingsMovesCounter);
             Console.WriteLine("\nThank you for using this game!\n\n");
         }
     }
