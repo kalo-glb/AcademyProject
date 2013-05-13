@@ -40,7 +40,7 @@ namespace King
 
         protected static string[] ValidPawnMovesForA = { "ADL", "ADR" };
 
-        protected static string[] ValidPawnMovesForB = { "BDL", "BDR" }; //ValidPawnMovesForD
+        protected static string[] ValidPawnMovesForB = { "BDL", "BDR" };
 
         protected static string[] ValidPawnMovesForC = { "CDL", "CDR" };
 
