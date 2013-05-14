@@ -654,29 +654,29 @@ namespace KingSurvivalGame
 
         private static void UpdatePawnExistingMoves(char checkDirection, char currentPawn)
         {
-            int neighbourCellY;
+            int pawnAvailableCell;
             if (checkDirection == 'L')
             {
-                neighbourCellY = 0;
+                pawnAvailableCell = 0;
             }
             else
             {
-                neighbourCellY = 1;
+                pawnAvailableCell = 1;
             }
 
             switch (currentPawn)
             {
                 case 'A':
-                    pawnExistingMoves[0, neighbourCellY] = false;
+                    pawnExistingMoves[0, pawnAvailableCell] = false;
                     break;
                 case 'B':
-                    pawnExistingMoves[1, neighbourCellY] = false;
+                    pawnExistingMoves[1, pawnAvailableCell] = false;
                     break;
                 case 'C':
-                    pawnExistingMoves[2, neighbourCellY] = false;
+                    pawnExistingMoves[2, pawnAvailableCell] = false;
                     break;
                 case 'D':
-                    pawnExistingMoves[3, neighbourCellY] = false;
+                    pawnExistingMoves[3, pawnAvailableCell] = false;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("Argumen must be one of: A, B, C or D");
