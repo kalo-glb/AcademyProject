@@ -23,7 +23,7 @@ namespace King
             { 'D', 'L', ' ', ' ', '0', ' ', '1', ' ', '2', ' ', '3', ' ', '4', ' ', '5', ' ', '6', ' ', '7', ' ', ' ', 'D', 'R' },
         };
 
-        protected static int[,] ygliNaDyskata = 
+        protected static int[,] gameEdges = 
         {
             { 2, 4 }, { 2, 18 }, { 9, 4 }, { 9, 18 }
         };
@@ -46,7 +46,7 @@ namespace King
 
         protected static string[] ValidPawnMovesForD = { "DDL", "DDR" };
 
-        protected static int kingsMovesCounter = 0;
+        protected static int movesCounter = 0;
 
         protected static bool gameIsOver = false;
         protected static int[,] pawnsPositions = 

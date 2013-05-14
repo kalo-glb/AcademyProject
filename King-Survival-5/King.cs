@@ -9,9 +9,9 @@ namespace KingSurvivalGame
         static bool check(int[] positionCoodinates)
         {
             int a = positionCoodinates[0];
-            bool flag = (a >= ygliNaDyskata[0, 0]) && (a <= ygliNaDyskata[3, 0]);
+            bool flag = (a >= gameEdges[0, 0]) && (a <= gameEdges[3, 0]);
             int b = positionCoodinates[1];
-            bool flag2 = (b >= ygliNaDyskata[0, 1]) && (b <= ygliNaDyskata[3, 1]);
+            bool flag2 = (b >= gameEdges[0, 1]) && (b <= gameEdges[3, 1]);
             return flag && flag2;
         }
 
@@ -106,7 +106,7 @@ namespace KingSurvivalGame
 
         static bool proverka2(string checkedString)
         {
-            if (kingsMovesCounter % 2 == 0)
+            if (movesCounter % 2 == 0)
             {
                 int[] flag = new int[4];
                 for (int i = 0; i < validKingInputs.Length; i++)
@@ -566,12 +566,17 @@ namespace KingSurvivalGame
         #endregion
 
         #region Part for refactoring. Author: Kaloqn
+
+        /// <summary>
+        /// check if the king can exit the field
+        /// </summary>
+        /// <param name="currentKingXAxe"></param>
         static void checkForKingExit(int currentKingXAxe)
         {
             if (currentKingXAxe == 2)
             {
                 Console.WriteLine("End!");
-                Console.WriteLine("King wins in {0} moves!", kingsMovesCounter / 2);
+                Console.WriteLine("King wins in {0} moves!", movesCounter / 2);
                 gameIsOver = true;
             }
         }
@@ -581,108 +586,42 @@ namespace KingSurvivalGame
             int[] displasmentDownLeft = { 1, -2 };
             int[] displasmentDownRight = { 1, 2 };
             int[] newCoords = new int[2];
+
+            // if the direction is L - left
             if (checkDirection == 'L')
             {
                 newCoords[0] = currentCoordinates[0] + displasmentDownLeft[0];
                 newCoords[1] = currentCoordinates[1] + displasmentDownLeft[1];
                 if (check(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
                 {
-                    char sign = field[currentCoordinates[0], currentCoordinates[1]];
-                    field[currentCoordinates[0], currentCoordinates[1]] = ' ';
-                    field[newCoords[0], newCoords[1]] = sign;
-                    kingsMovesCounter++;
-                    switch (currentPawn)
-                    {
-                        case 'A':
-                            pawnExistingMoves[0, 0] = true;
-                            pawnExistingMoves[0, 1] = true;
-                            break;
-                        case 'B':
-                            pawnExistingMoves[1, 0] = true;
-                            pawnExistingMoves[1, 1] = true;
-                            break;
-                        case 'C':
-                            pawnExistingMoves[2, 0] = true;
-                            pawnExistingMoves[2, 1] = true;
-                            break;
-                        case 'D':
-                            pawnExistingMoves[3, 0] = true;
-                            pawnExistingMoves[3, 1] = true;
-                            break;
-                        default:
-                            Console.WriteLine("ERROR!");
-                            break;
-                    }
+                    movesCounter++;
+                    UpdatePawnSymbolOnTheField(currentCoordinates, newCoords);
+                    UpdatePawnExistingMoves(currentPawn);
 
                     return newCoords;
                 }
                 else
                 {
-                    /* switch (currentPawn)
-                    {
-                    case 'A':
-                    pawnExistingMoves[0, 0] = false;
-                    break;
-                    case 'B':
-                    pawnExistingMoves[1, 0] = false;
-                    break;
-                    case 'C':
-                    pawnExistingMoves[2, 0] = false;
-                    break;
-                    case 'D':
-                    pawnExistingMoves[3, 0] = false;
-                    break;
-                    default:
-                    Console.WriteLine("ERROR!");
-                    break;
-                    }*/
-                    bool allAreFalse = true;
                     switch (currentPawn)
                     {
                         case 'A':
                             pawnExistingMoves[0, 0] = false;
-                            /*for (int i = 0; i < 2; i++)
-                            {
-                            if (pawnExistingMoves[0,i] == true)
-                            {
-                            allAreFalse = false;
-                            }
-                            }*/
                             break;
                         case 'B':
                             pawnExistingMoves[1, 0] = false;
-                            /*for (int i = 0; i < 2; i++)
-                            {
-                            if (pawnExistingMoves[1, i] == true)
-                            {
-                            allAreFalse = false;
-                            }
-                            }*/
                             break;
                         case 'C':
                             pawnExistingMoves[2, 0] = false;
-                            /*for (int i = 0; i < 2; i++)
-                            {
-                            if (pawnExistingMoves[2, i] == true)
-                            {
-                            allAreFalse = false;
-                            }
-                            }*/
                             break;
                         case 'D':
                             pawnExistingMoves[3, 0] = false;
-                            /*for (int i = 0; i < 2; i++)
-                            {
-                            if (pawnExistingMoves[3, i] == true)
-                            {
-                            allAreFalse = false;
-                            }
-                            }*/
                             break;
                         default:
-                            Console.WriteLine("ERROR!");
+                            throw new ArgumentOutOfRangeException("Argumen must be one of: A, B, C or D");
                             break;
                     }
+
+                    bool allAreFalse = true;
                     for (int i = 0; i < 4; i++)
                     {
                         for (int j = 0; j < 2; j++)
@@ -693,117 +632,51 @@ namespace KingSurvivalGame
                             }
                         }
                     }
+
                     if (allAreFalse)
                     {
                         Console.WriteLine("King wins!");
                         gameIsOver = true;
                         return null;
                     }
+
                     Console.BackgroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine("You can't go in this direction! ");
                     Console.ResetColor();
                     return null;
                 }
             }
-            else
+            else  // if the direction is R - right
             {
                 newCoords[0] = currentCoordinates[0] + displasmentDownRight[0];
                 newCoords[1] = currentCoordinates[1] + displasmentDownRight[1];
                 if (check(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
                 {
-                    char sign = field[currentCoordinates[0], currentCoordinates[1]];
-                    field[currentCoordinates[0], currentCoordinates[1]] = ' ';
-                    field[newCoords[0], newCoords[1]] = sign;
-                    kingsMovesCounter++;
-                    switch (currentPawn)
-                    {
-                        case 'A':
-                            pawnExistingMoves[0, 0] = true;
-                            pawnExistingMoves[0, 1] = true;
-                            break;
-                        case 'B':
-                            pawnExistingMoves[1, 0] = true;
-                            pawnExistingMoves[1, 1] = true;
-                            break;
-                        case 'C':
-                            pawnExistingMoves[2, 0] = true;
-                            pawnExistingMoves[2, 1] = true;
-                            break;
-                        case 'D':
-                            pawnExistingMoves[3, 0] = true;
-                            pawnExistingMoves[3, 1] = true;
-                            break;
-                        default:
-                            Console.WriteLine("ERROR!");
-                            break;
-                    }
+                    movesCounter++;
+                    UpdatePawnSymbolOnTheField(currentCoordinates, newCoords);
+                    UpdatePawnExistingMoves(currentPawn);
+
                     return newCoords;
                 }
                 else
                 {
-                    /*   switch (currentPawn)
-                    {
-                    case 'A':
-                    pawnExistingMoves[0, 1] = false;
-                    break;
-                    case 'B':
-                    pawnExistingMoves[1, 1] = false;
-                    break;
-                    case 'C':
-                    pawnExistingMoves[2, 1] = false;
-                    break;
-                    case 'D':
-                    pawnExistingMoves[3, 1] = false;
-                    break;
-                    default:
-                    Console.WriteLine("ERROR!");
-                    break;
-                    }*/
                     bool allAreFalse = true;
                     switch (currentPawn)
                     {
                         case 'A':
                             pawnExistingMoves[0, 1] = false;
-                            /*for (int i = 0; i < 2; i++)
-                            {
-                            if (pawnExistingMoves[0, i] == true)
-                            {
-                            allAreFalse = false;
-                            }
-                            }*/
                             break;
                         case 'B':
                             pawnExistingMoves[1, 1] = false;
-                            /*for (int i = 0; i < 2; i++)
-                            {
-                            if (pawnExistingMoves[1, i] == true)
-                            {
-                            allAreFalse = false;
-                            }
-                            }*/
                             break;
                         case 'C':
                             pawnExistingMoves[2, 1] = false;
-                            /*for (int i = 0; i < 2; i++)
-                            {
-                            if (pawnExistingMoves[2, i] == true)
-                            {
-                            allAreFalse = false;
-                            }
-                            }*/
                             break;
                         case 'D':
                             pawnExistingMoves[3, 1] = false;
-                            /*for (int i = 0; i < 2; i++)
-                            {
-                            if (pawnExistingMoves[3, i] == true)
-                            {
-                            allAreFalse = false;
-                            }
-                            }*/
                             break;
                         default:
-                            Console.WriteLine("ERROR!");
+                            throw new ArgumentOutOfRangeException("Argumen must be one of: A, B, C or D");
                             break;
                     }
 
@@ -820,17 +693,54 @@ namespace KingSurvivalGame
 
                     if (allAreFalse)
                     {
-                        gameIsOver = true;
                         Console.WriteLine("King wins!");
                         gameIsOver = true;
                         return null;
                     }
+
                     Console.BackgroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine("You can't go in this direction! ");
                     Console.ResetColor();
                     return null;
                 }
             }
+        }
+
+        /// <summary>
+        /// updates the moves that the pawn can take (usualy calle after moving tha pawn)
+        /// </summary>
+        /// <param name="currentPawn">the pawn to be updated</param>
+        private static void UpdatePawnExistingMoves(char currentPawn)
+        {
+            switch (currentPawn)
+            {
+                case 'A':
+                    pawnExistingMoves[0, 0] = true;
+                    pawnExistingMoves[0, 1] = true;
+                    break;
+                case 'B':
+                    pawnExistingMoves[1, 0] = true;
+                    pawnExistingMoves[1, 1] = true;
+                    break;
+                case 'C':
+                    pawnExistingMoves[2, 0] = true;
+                    pawnExistingMoves[2, 1] = true;
+                    break;
+                case 'D':
+                    pawnExistingMoves[3, 0] = true;
+                    pawnExistingMoves[3, 1] = true;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Argumen must be one of ");
+                    break;
+            }
+        }
+
+        private static void UpdatePawnSymbolOnTheField(int[] currentCoordinates, int[] newCoords)
+        {
+            char pawnSymbol = field[currentCoordinates[0], currentCoordinates[1]];
+            field[currentCoordinates[0], currentCoordinates[1]] = ' ';
+            field[newCoords[0], newCoords[1]] = pawnSymbol;
         }
         #endregion
 
@@ -857,7 +767,7 @@ namespace KingSurvivalGame
                     Console.ResetColor();
                 }
             }
-            START(kingsMovesCounter);
+            START(movesCounter);
         }
 
         static void ProcessPawnSide()
@@ -885,7 +795,7 @@ namespace KingSurvivalGame
                     Console.ResetColor();
                 }
             }
-            START(kingsMovesCounter);
+            START(movesCounter);
         }
 
         static int[] CheckNextKingPosition(int[] currentCoordinates, char firstDirection, char secondDirection)
@@ -907,7 +817,7 @@ namespace KingSurvivalGame
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
                         field[newCoords[0], newCoords[1]] = sign;
-                        kingsMovesCounter++;
+                        movesCounter++;
                         for (int i = 0; i < 4; i++)
                         {
                             kingExistingMoves[i] = true;
@@ -947,7 +857,7 @@ namespace KingSurvivalGame
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
                         field[newCoords[0], newCoords[1]] = sign;
-                        kingsMovesCounter++;
+                        movesCounter++;
                         for (int i = 0; i < 4; i++)
                         {
                             kingExistingMoves[i] = true;
@@ -990,7 +900,7 @@ namespace KingSurvivalGame
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
                         field[newCoords[0], newCoords[1]] = sign;
-                        kingsMovesCounter++;
+                        movesCounter++;
                         for (int i = 0; i < 4; i++)
                         {
                             kingExistingMoves[i] = true;
@@ -1030,7 +940,7 @@ namespace KingSurvivalGame
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
                         field[newCoords[0], newCoords[1]] = sign;
-                        kingsMovesCounter++;
+                        movesCounter++;
                         for (int i = 0; i < 4; i++)
                         {
                             kingExistingMoves[i] = true;
@@ -1068,7 +978,7 @@ namespace KingSurvivalGame
 
         static void Main()
         {
-            START(kingsMovesCounter);
+            START(movesCounter);
             Console.WriteLine("\nThank you for using this game!\n\n");
         }
     }
