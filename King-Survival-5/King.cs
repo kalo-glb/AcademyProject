@@ -447,7 +447,7 @@ namespace KingSurvivalGame
             pawnOldPosition[1] = pawnsPositions[3, 1];
 
             int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'R', 'D');
+            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'R', 'D');
 
             if (pawnNewPosition != null)
             {
@@ -463,7 +463,7 @@ namespace KingSurvivalGame
             pawnOldPosition[1] = pawnsPositions[3, 1];
 
             int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'L', 'D');
+            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'L', 'D');
 
             if (pawnNewPosition != null)
             {
@@ -479,7 +479,7 @@ namespace KingSurvivalGame
             pawnOldPosition[1] = pawnsPositions[2, 1];
 
             int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'R', 'C');
+            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'R', 'C');
 
             if (pawnNewPosition != null)
             {
@@ -495,7 +495,7 @@ namespace KingSurvivalGame
             pawnOldPosition[1] = pawnsPositions[2, 1];
 
             int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'L', 'C');
+            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'L', 'C');
 
             if (pawnNewPosition != null)
             {
@@ -511,7 +511,7 @@ namespace KingSurvivalGame
             pawnOldPosition[1] = pawnsPositions[1, 1];
 
             int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'R', 'B');
+            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'R', 'B');
 
             if (pawnNewPosition != null)
             {
@@ -527,7 +527,7 @@ namespace KingSurvivalGame
             pawnOldPosition[1] = pawnsPositions[1, 1];
 
             int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'L', 'B');
+            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'L', 'B');
 
             if (pawnNewPosition != null)
             {
@@ -543,7 +543,7 @@ namespace KingSurvivalGame
             pawnOldPosition[1] = pawnsPositions[0, 1];
 
             int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'R', 'A');
+            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'R', 'A');
 
             if (pawnNewPosition != null)
             {
@@ -559,7 +559,7 @@ namespace KingSurvivalGame
             pawnOldPosition[1] = pawnsPositions[0, 1];
 
             int[] pawnNextPosition = new int[2];
-            pawnNextPosition = CheckNextPawnPosition(pawnOldPosition, 'L', 'A');
+            pawnNextPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'L', 'A');
 
             if (pawnNextPosition != null)
             {
@@ -572,12 +572,12 @@ namespace KingSurvivalGame
         #region Part for refactoring. Author: Kaloqn
 
         /// <summary>
-        /// check if the king can exit the field
+        /// check if the king can exit the field (at the top) from these coordinates
         /// </summary>
-        /// <param name="currentKingXAxe"></param>
-        static void checkForKingExit(int currentKingXAxe)
+        /// <param name="coordinatesToCheck"></param>
+        static void checkForKingExit(int coordinatesToCheck)
         {
-            if (currentKingXAxe == 2)
+            if (coordinatesToCheck == 2)
             {
                 Console.WriteLine("End!");
                 Console.WriteLine("King wins in {0} moves!", movesCounter / 2);
@@ -585,7 +585,7 @@ namespace KingSurvivalGame
             }
         }
 
-        static int[] CheckNextPawnPosition(int[] currentCoordinates, char checkDirection, char currentPawn)
+        static int[] CheckNextPawnPositionAndMove(int[] currentCoordinates, char checkDirection, char currentPawn)
         {
             int[] displasmentDownLeft = { 1, -2 };
             int[] displasmentDownRight = { 1, 2 };
@@ -599,45 +599,16 @@ namespace KingSurvivalGame
                 if (check(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
                 {
                     movesCounter++;
-                    UpdatePawnSymbolOnTheField(currentCoordinates, newCoords);
+                    UpdateFigureSymbolOnTheField(currentCoordinates, newCoords);
                     UpdatePawnExistingMoves(currentPawn);
 
                     return newCoords;
                 }
                 else
                 {
-                    switch (currentPawn)
-                    {
-                        case 'A':
-                            pawnExistingMoves[0, 0] = false;
-                            break;
-                        case 'B':
-                            pawnExistingMoves[1, 0] = false;
-                            break;
-                        case 'C':
-                            pawnExistingMoves[2, 0] = false;
-                            break;
-                        case 'D':
-                            pawnExistingMoves[3, 0] = false;
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException("Argumen must be one of: A, B, C or D");
-                            break;
-                    }
+                    UpdatePawnExistingMoves(checkDirection, currentPawn);
 
-                    bool allAreFalse = true;
-                    for (int i = 0; i < 4; i++)
-                    {
-                        for (int j = 0; j < 2; j++)
-                        {
-                            if (pawnExistingMoves[i, j] == true)
-                            {
-                                allAreFalse = false;
-                            }
-                        }
-                    }
-
-                    if (allAreFalse)
+                    if (CheckIfAllAreFalse())
                     {
                         Console.WriteLine("King wins!");
                         gameIsOver = true;
@@ -657,45 +628,16 @@ namespace KingSurvivalGame
                 if (check(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
                 {
                     movesCounter++;
-                    UpdatePawnSymbolOnTheField(currentCoordinates, newCoords);
+                    UpdateFigureSymbolOnTheField(currentCoordinates, newCoords);
                     UpdatePawnExistingMoves(currentPawn);
 
                     return newCoords;
                 }
                 else
                 {
-                    bool allAreFalse = true;
-                    switch (currentPawn)
-                    {
-                        case 'A':
-                            pawnExistingMoves[0, 1] = false;
-                            break;
-                        case 'B':
-                            pawnExistingMoves[1, 1] = false;
-                            break;
-                        case 'C':
-                            pawnExistingMoves[2, 1] = false;
-                            break;
-                        case 'D':
-                            pawnExistingMoves[3, 1] = false;
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException("Argumen must be one of: A, B, C or D");
-                            break;
-                    }
+                    UpdatePawnExistingMoves(checkDirection, currentPawn);
 
-                    for (int i = 0; i < 4; i++)
-                    {
-                        for (int j = 0; j < 2; j++)
-                        {
-                            if (pawnExistingMoves[i, j] == true)
-                            {
-                                allAreFalse = false;
-                            }
-                        }
-                    }
-
-                    if (allAreFalse)
+                    if (CheckIfAllAreFalse())
                     {
                         Console.WriteLine("King wins!");
                         gameIsOver = true;
@@ -708,6 +650,55 @@ namespace KingSurvivalGame
                     return null;
                 }
             }
+        }
+
+        private static void UpdatePawnExistingMoves(char checkDirection, char currentPawn)
+        {
+            int neighbourCellY;
+            if (checkDirection == 'L')
+            {
+                neighbourCellY = 0;
+            }
+            else
+            {
+                neighbourCellY = 1;
+            }
+
+            switch (currentPawn)
+            {
+                case 'A':
+                    pawnExistingMoves[0, neighbourCellY] = false;
+                    break;
+                case 'B':
+                    pawnExistingMoves[1, neighbourCellY] = false;
+                    break;
+                case 'C':
+                    pawnExistingMoves[2, neighbourCellY] = false;
+                    break;
+                case 'D':
+                    pawnExistingMoves[3, neighbourCellY] = false;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Argumen must be one of: A, B, C or D");
+                    break;
+            }
+        }
+
+        private static bool CheckIfAllAreFalse()
+        {
+            bool allAreFalse = true;
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    if (pawnExistingMoves[i, j] == true)
+                    {
+                        allAreFalse = false;
+                    }
+                }
+            }
+
+            return allAreFalse;
         }
 
         /// <summary>
@@ -740,7 +731,12 @@ namespace KingSurvivalGame
             }
         }
 
-        private static void UpdatePawnSymbolOnTheField(int[] currentCoordinates, int[] newCoords)
+        /// <summary>
+        /// moves the game figures symbol (A, B, C, D or K) to its next position
+        /// </summary>
+        /// <param name="currentCoordinates">the coordinates the figure is currently on</param>
+        /// <param name="newCoords">the new coordinates for the figure</param>
+        private static void UpdateFigureSymbolOnTheField(int[] currentCoordinates, int[] newCoords)
         {
             char pawnSymbol = field[currentCoordinates[0], currentCoordinates[1]];
             field[currentCoordinates[0], currentCoordinates[1]] = ' ';

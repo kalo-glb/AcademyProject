@@ -3,3 +3,8 @@ C:\Users\Georgi\Documents\GitHub\AcademyProject\King-Survival-5\bin\Debug\King.p
 C:\Users\Georgi\Documents\GitHub\AcademyProject\King-Survival-5\obj\Debug\King.csprojResolveAssemblyReference.cache
 C:\Users\Georgi\Documents\GitHub\AcademyProject\King-Survival-5\obj\Debug\King.exe
 C:\Users\Georgi\Documents\GitHub\AcademyProject\King-Survival-5\obj\Debug\King.pdb
+F:\King-Survival-5\obj\Debug\King.exe
+F:\King-Survival-5\obj\Debug\King.pdb
+F:\King-Survival-5\obj\Debug\King.csprojResolveAssemblyReference.cache
+F:\King-Survival-5\bin\Debug\King.exe
+F:\King-Survival-5\bin\Debug\King.pdb
