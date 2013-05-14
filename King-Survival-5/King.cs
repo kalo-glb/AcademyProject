@@ -6,20 +6,24 @@ namespace KingSurvivalGame
     class KingSurvivalGame : BaseGame
     {
         #region Part for refactoring. Author: Georgi Georgiev
-        static bool check(int[] positionCoodinates)
+        /// <summary>
+        /// check position coordinates
+        /// </summary>
+        /// <param name="positionCoordinates"></param>
+        static bool check(int[] positionCoordinates)
         {
-            int a = positionCoodinates[0];
+            int a = positionCoordinates[0];
             bool flag = (a >= gameEdges[0, 0]) && (a <= gameEdges[3, 0]);
-            int b = positionCoodinates[1];
+            int b = positionCoordinates[1];
             bool flag2 = (b >= gameEdges[0, 1]) && (b <= gameEdges[3, 1]);
             return flag && flag2;
         }
 
-        static void PokajiDyskata()
+        //Write Game Field in Console and change
+        //Background and Foreground colors of Game Field
+        static void GetField()
         {
-            //tova printira prazen red na konzolata
             Console.WriteLine();
-            //tuka kato cqlo si pravq nekvi shareniiki
             for (int row = 0; row < field.GetLength(0); row++)
             {
                 for (int col = 0; col < field.GetLength(1); col++)
@@ -32,11 +36,8 @@ namespace KingSurvivalGame
                         {
                             if (col % 4 == 0)
                             {
-                                //i neka byde zelenina
                                 Console.BackgroundColor = ConsoleColor.Green;
-                                //tva go prai cherno
                                 Console.ForegroundColor = ConsoleColor.Black;
-                                //i stignaxme nai posle do printiraneto na elementa
                                 Console.Write(field[row, col]);
                                 Console.ResetColor();
                             }
@@ -82,10 +83,14 @@ namespace KingSurvivalGame
             Console.WriteLine();
         }
 
-        static void START(int moveCounter)
+        /// <summary>
+        /// start game
+        /// </summary>
+        /// <param name="moveCounter"></param>
+        static void Start(int moveCounter)
         {
             if (gameIsOver)
-            { //igrata svyrshi
+            {
                 Console.WriteLine("Game is finished!");
                 return;
             }
@@ -93,18 +98,18 @@ namespace KingSurvivalGame
             {
                 if (moveCounter % 2 == 0)
                 {
-                    PokajiDyskata();
+                    GetField();
                     ProcessKingSide();
                 }
                 else
                 {
-                    PokajiDyskata();
+                    GetField();
                     ProcessPawnSide();
                 }
             }
         }
 
-        static bool proverka2(string checkedString)
+        static bool CheckCommands(string checkedString)
         {
             if (movesCounter % 2 == 0)
             {
@@ -265,7 +270,6 @@ namespace KingSurvivalGame
                         Console.WriteLine("Invalid command name!");
                         Console.ResetColor();
                         return false;
-                    //    break;
                 }
             }
             return true;
@@ -275,7 +279,7 @@ namespace KingSurvivalGame
         #region Part for refactoring. Author: vlado
         internal static bool proverkaIProcess(string command)
         {
-            bool isCommandValid = proverka2(command);
+            bool isCommandValid = CheckCommands(command);
             if (isCommandValid)
             {
                 char figureLetter = command[0];
@@ -767,7 +771,7 @@ namespace KingSurvivalGame
                     Console.ResetColor();
                 }
             }
-            START(movesCounter);
+            Start(movesCounter);
         }
 
         static void ProcessPawnSide()
@@ -795,7 +799,7 @@ namespace KingSurvivalGame
                     Console.ResetColor();
                 }
             }
-            START(movesCounter);
+            Start(movesCounter);
         }
 
         static int[] CheckNextKingPosition(int[] currentCoordinates, char firstDirection, char secondDirection)
@@ -978,7 +982,7 @@ namespace KingSurvivalGame
 
         static void Main()
         {
-            START(movesCounter);
+            Start(movesCounter);
             Console.WriteLine("\nThank you for using this game!\n\n");
         }
     }
