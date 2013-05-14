@@ -5,7 +5,7 @@ namespace KingSurvivalGame
 {
     class KingSurvivalGame : BaseGame
     {
-        // Part for refactoring. Author: Georgi Georgiev
+        #region Part for refactoring. Author: Georgi Georgiev
         static bool check(int[] positionCoodinates)
         {
             int a = positionCoodinates[0];
@@ -265,219 +265,97 @@ namespace KingSurvivalGame
                         Console.WriteLine("Invalid command name!");
                         Console.ResetColor();
                         return false;
-                //    break;
+                    //    break;
                 }
             }
             return true;
         }
+        #endregion
 
-        // Part for refactoring. Author: vlado
+        #region Part for refactoring. Author: vlado
         internal static bool proverkaIProcess(string command)
         {
-            bool isValidCommand = proverka2(command);
-            if (isValidCommand)
+            bool isCommandValid = proverka2(command);
+            if (isCommandValid)
             {
                 char figureLetter = command[0];
+                char verticalDirection = command[1];
+                char horizontalDirection = command[2];
                 switch (figureLetter)
                 {
                     case 'A':
-
-                        if (command[2] == 'L')
                         {
-                            int[] pawnOldPosition = new int[2];
-                            pawnOldPosition[0] = pawnsPositions[0, 0];
-                            pawnOldPosition[1] = pawnsPositions[0, 1];
-
-                            int[] pawnNextPosition = new int[2];
-                            pawnNextPosition = CheckNextPownPosition(pawnOldPosition, 'L', 'A');
-
-                            if (pawnNextPosition != null)
+                            if (horizontalDirection == 'L')
                             {
-                                pawnsPositions[0, 0] = pawnNextPosition[0];
-                                pawnsPositions[0, 1] = pawnNextPosition[1];
+                                MovePawnALeft();
                             }
-                        }
-                        else
-                        {
-                            int[] pawnOldPosition = new int[2];
-                            pawnOldPosition[0] = pawnsPositions[0, 0];
-                            pawnOldPosition[1] = pawnsPositions[0, 1];
-
-                            int[] pawnNewPosition = new int[2];
-                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'R', 'A');
-
-                            if (pawnNewPosition != null)
+                            else
                             {
-                                pawnsPositions[0, 0] = pawnNewPosition[0];
-                                pawnsPositions[0, 1] = pawnNewPosition[1];
+                                MovePawnARight();
                             }
-                        }
 
-                        break;
+                            break;
+                        }
                     case 'B':
-                        if (command[2] == 'L')
                         {
-                            int[] pawnOldPosition = new int[2];
-                            pawnOldPosition[0] = pawnsPositions[1, 0];
-                            pawnOldPosition[1] = pawnsPositions[1, 1];
-
-                            int[] pawnNewPosition = new int[2];
-                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'L', 'B');
-
-                            if (pawnNewPosition != null)
+                            if (horizontalDirection == 'L')
                             {
-                                pawnsPositions[1, 0] = pawnNewPosition[0];
-                                pawnsPositions[1, 1] = pawnNewPosition[1];
+                                MovePawnBLeft();
                             }
-                        }
-                        else
-                        {
-                            int[] pawnOldPosition = new int[2];
-                            pawnOldPosition[0] = pawnsPositions[1, 0];
-                            pawnOldPosition[1] = pawnsPositions[1, 1];
-
-                            int[] pawnNewPosition = new int[2];
-                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'R', 'B');
-
-                            if (pawnNewPosition != null)
+                            else
                             {
-                                pawnsPositions[1, 0] = pawnNewPosition[0];
-                                pawnsPositions[1, 1] = pawnNewPosition[1];
+                                MovePawnBRight();
                             }
-                        }
 
-                        break;
+                            break;
+                        }
                     case 'C':
-                        if (command[2] == 'L')
                         {
-                            int[] pawnOldPosition = new int[2];
-                            pawnOldPosition[0] = pawnsPositions[2, 0];
-                            pawnOldPosition[1] = pawnsPositions[2, 1];
-
-                            int[] pawnNewPosition = new int[2];
-                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'L', 'C');
-
-                            if (pawnNewPosition != null)
+                            if (horizontalDirection == 'L')
                             {
-                                pawnsPositions[2, 0] = pawnNewPosition[0];
-                                pawnsPositions[2, 1] = pawnNewPosition[1];
+                                MovePawnCLeft();
                             }
-                        }
-                        else
-                        {
-                            int[] pawnOldPosition = new int[2];
-                            pawnOldPosition[0] = pawnsPositions[2, 0];
-                            pawnOldPosition[1] = pawnsPositions[2, 1];
-
-                            int[] pawnNewPosition = new int[2];
-                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'R', 'C');
-
-                            if (pawnNewPosition != null)
+                            else
                             {
-                                pawnsPositions[1, 0] = pawnNewPosition[0];
-                                pawnsPositions[1, 1] = pawnNewPosition[1];
+                                MovePawnCRight();
                             }
-                        }
 
-                        break;
+                            break;
+                        }
                     case 'D':
-                        if (command[2] == 'L')
                         {
-                            int[] pawnOldPosition = new int[2];
-                            pawnOldPosition[0] = pawnsPositions[3, 0];
-                            pawnOldPosition[1] = pawnsPositions[3, 1];
-
-                            int[] pawnNewPosition = new int[2];
-                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'L', 'D');
-
-                            if (pawnNewPosition != null)
+                            if (horizontalDirection == 'L')
                             {
-                                pawnsPositions[3, 0] = pawnNewPosition[0];
-                                pawnsPositions[3, 1] = pawnNewPosition[1];
+                                MovePawnDLeft();
                             }
-                        }
-                        else
-                        {
-                            int[] pawnOldPosition = new int[2];
-                            pawnOldPosition[0] = pawnsPositions[3, 0];
-                            pawnOldPosition[1] = pawnsPositions[3, 1];
-
-                            int[] pawnNewPosition = new int[2];
-                            pawnNewPosition = CheckNextPownPosition(pawnOldPosition, 'R', 'D');
-
-                            if (pawnNewPosition != null)
+                            else
                             {
-                                pawnsPositions[3, 0] = pawnNewPosition[0];
-                                pawnsPositions[3, 1] = pawnNewPosition[1];
+                                MovePawnDRight();
                             }
-                        }
 
-                        break;
+                            break;
+                        }
                     case 'K':
-                        if (command[1] == 'U')
+                        if (verticalDirection == 'U')
                         {
-                            if (command[2] == 'L')
+                            if (horizontalDirection == 'L')
                             {
-                                int[] kingOldPosition = new int[2];
-                                kingOldPosition[0] = kingPosition[0];
-                                kingOldPosition[1] = kingPosition[1];
-
-                                int[] kingNewPosition = new int[2];
-                                kingNewPosition = checkNextKingPosition(kingOldPosition, 'U', 'L');
-
-                                if (kingNewPosition != null)
-                                {
-                                    kingPosition[0] = kingNewPosition[0];
-                                    kingPosition[1] = kingNewPosition[1];
-                                }
+                                MoveKingUpperLeft();
                             }
                             else
                             {
-                                int[] kingOldPosition = new int[2];
-                                kingOldPosition[0] = kingPosition[0];
-                                kingOldPosition[1] = kingPosition[1];
-
-                                int[] kingNewPosition = new int[2];
-                                kingNewPosition = checkNextKingPosition(kingOldPosition, 'U', 'R');
-
-                                if (kingNewPosition != null)
-                                {
-                                    kingPosition[0] = kingNewPosition[0];
-                                    kingPosition[1] = kingNewPosition[1];
-                                }
+                                MoveKingUpperRight();
                             }
                         }
                         else
                         {
-                            if (command[2] == 'L')
+                            if (horizontalDirection == 'L')
                             {
-                                int[] kingOldPosition = new int[2];
-                                kingOldPosition[0] = kingPosition[0];
-                                kingOldPosition[1] = kingPosition[1];
-
-                                int[] kingNewPosition = new int[2];
-                                kingNewPosition = checkNextKingPosition(kingOldPosition, 'D', 'L');
-
-                                if (kingNewPosition != null)
-                                {
-                                    kingPosition[0] = kingNewPosition[0];
-                                    kingPosition[1] = kingNewPosition[1];
-                                }
+                                MoveKingDownLeft();
                             }
                             else
                             {
-                                int[] kingOldPosition = new int[2];
-                                kingOldPosition[0] = kingPosition[0];
-                                kingOldPosition[1] = kingPosition[1];
-
-                                int[] kingNewPosition = new int[2];
-                                kingNewPosition = checkNextKingPosition(kingOldPosition, 'D', 'R');
-
-                                if (kingNewPosition != null)
-                                {
-                                    kingPosition[0] = kingNewPosition[0];
-                                    kingPosition[1] = kingNewPosition[1];
-                                }
+                                MoveKingDownRight();
                             }
                         }
 
@@ -494,7 +372,200 @@ namespace KingSurvivalGame
             }
         }
 
-        // Part for refactoring. Author: Kaloqn
+        private static void MoveKingDownRight()
+        {
+            int[] kingOldPosition = new int[2];
+            kingOldPosition[0] = kingPosition[0];
+            kingOldPosition[1] = kingPosition[1];
+
+            int[] kingNewPosition = new int[2];
+            kingNewPosition = CheckNextKingPosition(kingOldPosition, 'D', 'R');
+
+            if (kingNewPosition != null)
+            {
+                kingPosition[0] = kingNewPosition[0];
+                kingPosition[1] = kingNewPosition[1];
+            }
+        }
+
+        private static void MoveKingDownLeft()
+        {
+            int[] kingOldPosition = new int[2];
+            kingOldPosition[0] = kingPosition[0];
+            kingOldPosition[1] = kingPosition[1];
+
+            int[] kingNewPosition = new int[2];
+            kingNewPosition = CheckNextKingPosition(kingOldPosition, 'D', 'L');
+
+            if (kingNewPosition != null)
+            {
+                kingPosition[0] = kingNewPosition[0];
+                kingPosition[1] = kingNewPosition[1];
+            }
+        }
+
+        private static void MoveKingUpperRight()
+        {
+            int[] kingOldPosition = new int[2];
+            kingOldPosition[0] = kingPosition[0];
+            kingOldPosition[1] = kingPosition[1];
+
+            int[] kingNewPosition = new int[2];
+            kingNewPosition = CheckNextKingPosition(kingOldPosition, 'U', 'R');
+
+            if (kingNewPosition != null)
+            {
+                kingPosition[0] = kingNewPosition[0];
+                kingPosition[1] = kingNewPosition[1];
+            }
+        }
+
+        private static void MoveKingUpperLeft()
+        {
+            int[] kingOldPosition = new int[2];
+            kingOldPosition[0] = kingPosition[0];
+            kingOldPosition[1] = kingPosition[1];
+
+            int[] kingNewPosition = new int[2];
+            kingNewPosition = CheckNextKingPosition(kingOldPosition, 'U', 'L');
+
+            if (kingNewPosition != null)
+            {
+                kingPosition[0] = kingNewPosition[0];
+                kingPosition[1] = kingNewPosition[1];
+            }
+        }
+
+        private static void MovePawnDRight()
+        {
+            int[] pawnOldPosition = new int[2];
+            pawnOldPosition[0] = pawnsPositions[3, 0];
+            pawnOldPosition[1] = pawnsPositions[3, 1];
+
+            int[] pawnNewPosition = new int[2];
+            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'R', 'D');
+
+            if (pawnNewPosition != null)
+            {
+                pawnsPositions[3, 0] = pawnNewPosition[0];
+                pawnsPositions[3, 1] = pawnNewPosition[1];
+            }
+        }
+
+        private static void MovePawnDLeft()
+        {
+            int[] pawnOldPosition = new int[2];
+            pawnOldPosition[0] = pawnsPositions[3, 0];
+            pawnOldPosition[1] = pawnsPositions[3, 1];
+
+            int[] pawnNewPosition = new int[2];
+            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'L', 'D');
+
+            if (pawnNewPosition != null)
+            {
+                pawnsPositions[3, 0] = pawnNewPosition[0];
+                pawnsPositions[3, 1] = pawnNewPosition[1];
+            }
+        }
+
+        private static void MovePawnCRight()
+        {
+            int[] pawnOldPosition = new int[2];
+            pawnOldPosition[0] = pawnsPositions[2, 0];
+            pawnOldPosition[1] = pawnsPositions[2, 1];
+
+            int[] pawnNewPosition = new int[2];
+            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'R', 'C');
+
+            if (pawnNewPosition != null)
+            {
+                pawnsPositions[1, 0] = pawnNewPosition[0];
+                pawnsPositions[1, 1] = pawnNewPosition[1];
+            }
+        }
+
+        private static void MovePawnCLeft()
+        {
+            int[] pawnOldPosition = new int[2];
+            pawnOldPosition[0] = pawnsPositions[2, 0];
+            pawnOldPosition[1] = pawnsPositions[2, 1];
+
+            int[] pawnNewPosition = new int[2];
+            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'L', 'C');
+
+            if (pawnNewPosition != null)
+            {
+                pawnsPositions[2, 0] = pawnNewPosition[0];
+                pawnsPositions[2, 1] = pawnNewPosition[1];
+            }
+        }
+
+        private static void MovePawnBRight()
+        {
+            int[] pawnOldPosition = new int[2];
+            pawnOldPosition[0] = pawnsPositions[1, 0];
+            pawnOldPosition[1] = pawnsPositions[1, 1];
+
+            int[] pawnNewPosition = new int[2];
+            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'R', 'B');
+
+            if (pawnNewPosition != null)
+            {
+                pawnsPositions[1, 0] = pawnNewPosition[0];
+                pawnsPositions[1, 1] = pawnNewPosition[1];
+            }
+        }
+
+        private static void MovePawnBLeft()
+        {
+            int[] pawnOldPosition = new int[2];
+            pawnOldPosition[0] = pawnsPositions[1, 0];
+            pawnOldPosition[1] = pawnsPositions[1, 1];
+
+            int[] pawnNewPosition = new int[2];
+            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'L', 'B');
+
+            if (pawnNewPosition != null)
+            {
+                pawnsPositions[1, 0] = pawnNewPosition[0];
+                pawnsPositions[1, 1] = pawnNewPosition[1];
+            }
+        }
+
+        private static void MovePawnARight()
+        {
+            int[] pawnOldPosition = new int[2];
+            pawnOldPosition[0] = pawnsPositions[0, 0];
+            pawnOldPosition[1] = pawnsPositions[0, 1];
+
+            int[] pawnNewPosition = new int[2];
+            pawnNewPosition = CheckNextPawnPosition(pawnOldPosition, 'R', 'A');
+
+            if (pawnNewPosition != null)
+            {
+                pawnsPositions[0, 0] = pawnNewPosition[0];
+                pawnsPositions[0, 1] = pawnNewPosition[1];
+            }
+        }
+
+        private static void MovePawnALeft()
+        {
+            int[] pawnOldPosition = new int[2];
+            pawnOldPosition[0] = pawnsPositions[0, 0];
+            pawnOldPosition[1] = pawnsPositions[0, 1];
+
+            int[] pawnNextPosition = new int[2];
+            pawnNextPosition = CheckNextPawnPosition(pawnOldPosition, 'L', 'A');
+
+            if (pawnNextPosition != null)
+            {
+                pawnsPositions[0, 0] = pawnNextPosition[0];
+                pawnsPositions[0, 1] = pawnNextPosition[1];
+            }
+        }
+        #endregion
+
+        #region Part for refactoring. Author: Kaloqn
         static void checkForKingExit(int currentKingXAxe)
         {
             if (currentKingXAxe == 2)
@@ -505,7 +576,7 @@ namespace KingSurvivalGame
             }
         }
 
-        static int[] CheckNextPownPosition(int[] currentCoordinates, char checkDirection, char currentPawn)
+        static int[] CheckNextPawnPosition(int[] currentCoordinates, char checkDirection, char currentPawn)
         {
             int[] displasmentDownLeft = { 1, -2 };
             int[] displasmentDownRight = { 1, 2 };
@@ -761,8 +832,9 @@ namespace KingSurvivalGame
                 }
             }
         }
+        #endregion
 
-        // Part for refactoring. Author: ???
+        #region Part for refactoring. Author: ???
         static void ProcessKingSide()
         {
             bool isExecuted = false;
@@ -816,7 +888,7 @@ namespace KingSurvivalGame
             START(kingsMovesCounter);
         }
 
-        static int[] checkNextKingPosition(int[] currentCoordinates, char firstDirection, char secondDirection)
+        static int[] CheckNextKingPosition(int[] currentCoordinates, char firstDirection, char secondDirection)
         {
             int[] displasmentDownLeft = { 1, -2 };
             int[] displasmentDownRight = { 1, 2 };
@@ -992,6 +1064,7 @@ namespace KingSurvivalGame
                 // checkForKingExit();
             }
         }
+        #endregion
 
         static void Main()
         {
