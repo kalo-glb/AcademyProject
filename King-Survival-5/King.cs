@@ -572,7 +572,7 @@ namespace KingSurvivalGame
         #region Part for refactoring. Author: Kaloqn
 
         /// <summary>
-        /// check if the king can exit the field (at the top) from these coordinates
+        /// PROBABLY: check if the king can exit the field (at the top) from these coordinates
         /// </summary>
         /// <param name="coordinatesToCheck"></param>
         static void checkForKingExit(int coordinatesToCheck)
