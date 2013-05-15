@@ -1,0 +1,9 @@
+F:\King-Survival-5\TestKingSurvival\bin\Debug\TestKingSurvival.dll
+F:\King-Survival-5\TestKingSurvival\bin\Debug\TestKingSurvival.pdb
+F:\King-Survival-5\TestKingSurvival\bin\Debug\King.exe
+F:\King-Survival-5\TestKingSurvival\bin\Debug\nunit.framework.dll
+F:\King-Survival-5\TestKingSurvival\bin\Debug\King.pdb
+F:\King-Survival-5\TestKingSurvival\bin\Debug\nunit.framework.xml
+F:\King-Survival-5\TestKingSurvival\obj\Debug\TestKingSurvival.dll
+F:\King-Survival-5\TestKingSurvival\obj\Debug\TestKingSurvival.pdb
+F:\King-Survival-5\TestKingSurvival\obj\Debug\TestKingSurvival.csprojResolveAssemblyReference.cache
