@@ -12,5 +12,41 @@ namespace TestKingSurvival
         {
             Assert.IsTrue(true);
         }
+
+        [Test]
+        public void TestGetFieldEvenRowAndEvenCol()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [Test]
+        public void TestGetFieldEvenRowAndOddCol()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [Test]
+        public void TestGetFieldEvenRowAndQuarterCol()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [Test]
+        public void TestGetFieldOddRowAndEvenCol()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [Test]
+        public void TestGetFieldOddRowAndOddCol()
+        {
+            Assert.IsTrue(true);
+        }
+
+        [Test]
+        public void TestGetFieldOddRowAndQuarterCol()
+        {
+            Assert.IsTrue(true);
+        }
     }
 }

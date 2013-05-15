@@ -7,20 +7,23 @@ namespace KingSurvivalGame
     {
         #region Part for refactoring. Author: Georgi Georgiev
         /// <summary>
-        /// check position coordinates
+        /// Check coordinates
         /// </summary>
-        /// <param name="positionCoordinates"></param>
-        static bool check(int[] positionCoordinates)
+        /// <param name="positionCoordinates">Coordinates to check</param>
+        /// <returns>Return a boolean value is coordinates valid</returns>
+        static bool CheckCoordinates(int[] positionCoordinates)
         {
-            int a = positionCoordinates[0];
-            bool flag = (a >= gameEdges[0, 0]) && (a <= gameEdges[3, 0]);
-            int b = positionCoordinates[1];
-            bool flag2 = (b >= gameEdges[0, 1]) && (b <= gameEdges[3, 1]);
-            return flag && flag2;
+            int firstCoordinates = positionCoordinates[0];
+            bool isFirstCoordinatesValid = (firstCoordinates >= gameEdges[0, 0]) && (firstCoordinates <= gameEdges[3, 0]);
+            int secondCoordinates = positionCoordinates[1];
+            bool isSecondCoordinatesValid = (secondCoordinates >= gameEdges[0, 1]) && (secondCoordinates <= gameEdges[3, 1]);
+            return isFirstCoordinatesValid && isSecondCoordinatesValid;
         }
 
-        //Write Game Field in Console and change
-        //Background and Foreground colors of Game Field
+        /// <summary>
+        /// Write Game Field in Console and change
+        /// Background and Foreground colors of Game Field
+        /// </summary>
         static void GetField()
         {
             Console.WriteLine();
@@ -29,7 +32,7 @@ namespace KingSurvivalGame
                 for (int col = 0; col < field.GetLength(1); col++)
                 {
                     int[] coordinates = { row, col };
-                    bool isCellIn = check(coordinates);
+                    bool isCellIn = CheckCoordinates(coordinates);
                     if (isCellIn)
                     {
                         if (row % 2 == 0)
@@ -84,9 +87,9 @@ namespace KingSurvivalGame
         }
 
         /// <summary>
-        /// start game
+        /// Start game
         /// </summary>
-        /// <param name="moveCounter"></param>
+        /// <param name="moveCounter">Get count of moves</param>
         static void Start(int moveCounter)
         {
             if (gameIsOver)
@@ -109,7 +112,13 @@ namespace KingSurvivalGame
             }
         }
 
-        static bool CheckCommands(string checkedString)
+        /// <summary>
+        /// Check Commands Exist
+        /// </summary>
+        /// <param name="checkedString">String to check</param>
+        /// <returns>Return a boolean value true if command exist</returns>
+        /// <returns>Return a boolean value false if command do not exist</returns>
+        static bool CheckCommandsExist(string checkedString)
         {
             if (movesCounter % 2 == 0)
             {
@@ -272,14 +281,13 @@ namespace KingSurvivalGame
                         return false;
                 }
             }
-            return true;
         }
         #endregion
 
         #region Part for refactoring. Author: vlado
         internal static bool proverkaIProcess(string command)
         {
-            bool isCommandValid = CheckCommands(command);
+            bool isCommandValid = CheckCommandsExist(command);
             if (isCommandValid)
             {
                 char figureLetter = command[0];
@@ -596,7 +604,7 @@ namespace KingSurvivalGame
             {
                 newCoords[0] = currentCoordinates[0] + displasmentDownLeft[0];
                 newCoords[1] = currentCoordinates[1] + displasmentDownLeft[1];
-                if (check(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
+                if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
                 {
                     movesCounter++;
                     UpdateFigureSymbolOnTheField(currentCoordinates, newCoords);
@@ -625,7 +633,7 @@ namespace KingSurvivalGame
             {
                 newCoords[0] = currentCoordinates[0] + displasmentDownRight[0];
                 newCoords[1] = currentCoordinates[1] + displasmentDownRight[1];
-                if (check(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
+                if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
                 {
                     movesCounter++;
                     UpdateFigureSymbolOnTheField(currentCoordinates, newCoords);
@@ -812,7 +820,7 @@ namespace KingSurvivalGame
                 {
                     newCoords[0] = currentCoordinates[0] + displasmentUpLeft[0];
                     newCoords[1] = currentCoordinates[1] + displasmentUpLeft[1];
-                    if (check(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
+                    if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
                     {
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
@@ -852,7 +860,7 @@ namespace KingSurvivalGame
                 {
                     newCoords[0] = currentCoordinates[0] + displasmentUpRight[0];
                     newCoords[1] = currentCoordinates[1] + displasmentUpRight[1];
-                    if (check(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
+                    if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
                     {
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
@@ -895,7 +903,7 @@ namespace KingSurvivalGame
                 {
                     newCoords[0] = currentCoordinates[0] + displasmentDownLeft[0];
                     newCoords[1] = currentCoordinates[1] + displasmentDownLeft[1];
-                    if (check(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
+                    if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
                     {
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';
@@ -935,7 +943,7 @@ namespace KingSurvivalGame
                 {
                     newCoords[0] = currentCoordinates[0] + displasmentDownRight[0];
                     newCoords[1] = currentCoordinates[1] + displasmentDownRight[1];
-                    if (check(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
+                    if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
                     {
                         char sign = field[currentCoordinates[0], currentCoordinates[1]];
                         field[currentCoordinates[0], currentCoordinates[1]] = ' ';

@@ -1,0 +1,5 @@
+C:\Users\Georgi\Documents\GitHub\AcademyProject\King-Survival-5\obj\Debug\King.exe
+C:\Users\Georgi\Documents\GitHub\AcademyProject\King-Survival-5\obj\Debug\King.pdb
+C:\Users\Georgi\Documents\GitHub\AcademyProject\King-Survival-5\obj\Debug\KingSurvival.csprojResolveAssemblyReference.cache
+C:\Users\Georgi\Documents\GitHub\AcademyProject\King-Survival-5\bin\Debug\King.exe
+C:\Users\Georgi\Documents\GitHub\AcademyProject\King-Survival-5\bin\Debug\King.pdb
