@@ -1,9 +1,8 @@
 ﻿using System;
-using King;
 
 namespace KingSurvivalGame
 {
-    public class KingSurvivalGame : BaseGame
+    public class King : BaseGame
     {
         #region Part for refactoring. Author: Georgi Georgiev
         /// <summary>
@@ -292,6 +291,9 @@ namespace KingSurvivalGame
         /// <param name="isExecuted">If the move is made successfully return true, else false.</param>
         public static void ExecuteCommand(string command, out bool isExecuted)
         {
+            // Make it uppercase for test methods
+            command = command.ToUpper();
+
             bool isCommandExist = CheckCommandsExist(command);
             if (isCommandExist)
             {
@@ -313,6 +315,7 @@ namespace KingSurvivalGame
             else
             {
                 isExecuted = false;
+                // throw new FormatException("The command was not in the right format.");
             }
         }
 
@@ -326,6 +329,7 @@ namespace KingSurvivalGame
             kingNewPosition = CheckNextKingPosition(
                 kingOldPosition, verticalDirection, horizontalDirection);
 
+            // If there are next valid position - move the king there
             if (kingNewPosition != null)
             {
                 kingPosition[0] = kingNewPosition[0];
@@ -335,6 +339,7 @@ namespace KingSurvivalGame
 
         private static void MovePawn(char pawnLetter, char horizontalDirection)
         {
+            // 0 - A; 1 - B, 2 - C, 3 - D
             int pawnPosition = pawnLetter - 'A';
             
             int[] pawnOldPosition = new int[2];
@@ -345,6 +350,7 @@ namespace KingSurvivalGame
             pawnNewPosition = CheckNextPawnPositionAndMove(
                 pawnOldPosition, horizontalDirection, pawnLetter);
 
+            // If there are next valid position - move the pawn there
             if (pawnNewPosition != null)
             {
                 pawnsPositions[pawnPosition, 0] = pawnNewPosition[0];
