@@ -5,7 +5,7 @@ using System.Text;
 
 namespace King
 {
-    class BaseGame
+    public class BaseGame
     {
         protected static char[,] field = 
         {

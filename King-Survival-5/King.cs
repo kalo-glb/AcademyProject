@@ -3,7 +3,7 @@ using King;
 
 namespace KingSurvivalGame
 {
-    class KingSurvivalGame : BaseGame
+    public class KingSurvivalGame : BaseGame
     {
         #region Part for refactoring. Author: Georgi Georgiev
         /// <summary>
@@ -285,113 +285,46 @@ namespace KingSurvivalGame
         #endregion
 
         #region Part for refactoring. Author: vlado
-        internal static bool proverkaIProcess(string command)
+        /// <summary>
+        /// Make a move with king or pawn by given command.
+        /// </summary>
+        /// <param name="command">The command that will be checked and executed.</param>
+        /// <param name="isExecuted">If the move is made successfully return true, else false.</param>
+        public static void ExecuteCommand(string command, out bool isExecuted)
         {
-            bool isCommandValid = CheckCommandsExist(command);
-            if (isCommandValid)
+            bool isCommandExist = CheckCommandsExist(command);
+            if (isCommandExist)
             {
                 char figureLetter = command[0];
                 char verticalDirection = command[1];
                 char horizontalDirection = command[2];
-                switch (figureLetter)
+
+                if (figureLetter == 'K')
                 {
-                    case 'A':
-                        {
-                            if (horizontalDirection == 'L')
-                            {
-                                MovePawnALeft();
-                            }
-                            else
-                            {
-                                MovePawnARight();
-                            }
-
-                            break;
-                        }
-                    case 'B':
-                        {
-                            if (horizontalDirection == 'L')
-                            {
-                                MovePawnBLeft();
-                            }
-                            else
-                            {
-                                MovePawnBRight();
-                            }
-
-                            break;
-                        }
-                    case 'C':
-                        {
-                            if (horizontalDirection == 'L')
-                            {
-                                MovePawnCLeft();
-                            }
-                            else
-                            {
-                                MovePawnCRight();
-                            }
-
-                            break;
-                        }
-                    case 'D':
-                        {
-                            if (horizontalDirection == 'L')
-                            {
-                                MovePawnDLeft();
-                            }
-                            else
-                            {
-                                MovePawnDRight();
-                            }
-
-                            break;
-                        }
-                    case 'K':
-                        if (verticalDirection == 'U')
-                        {
-                            if (horizontalDirection == 'L')
-                            {
-                                MoveKingUpperLeft();
-                            }
-                            else
-                            {
-                                MoveKingUpperRight();
-                            }
-                        }
-                        else
-                        {
-                            if (horizontalDirection == 'L')
-                            {
-                                MoveKingDownLeft();
-                            }
-                            else
-                            {
-                                MoveKingDownRight();
-                            }
-                        }
-
-                        break;
-                    default:
-                        throw new FormatException("The format of the command is not correct!");
+                    MoveKing(verticalDirection, horizontalDirection);
                 }
-
-                return true;
+                else
+                {
+                    MovePawn(figureLetter, horizontalDirection);
+                }
+                
+                isExecuted = true;
             }
             else
             {
-                return false;
+                isExecuted = false;
             }
         }
 
-        private static void MoveKingDownRight()
+        private static void MoveKing(char verticalDirection, char horizontalDirection)
         {
             int[] kingOldPosition = new int[2];
             kingOldPosition[0] = kingPosition[0];
             kingOldPosition[1] = kingPosition[1];
 
             int[] kingNewPosition = new int[2];
-            kingNewPosition = CheckNextKingPosition(kingOldPosition, 'D', 'R');
+            kingNewPosition = CheckNextKingPosition(
+                kingOldPosition, verticalDirection, horizontalDirection);
 
             if (kingNewPosition != null)
             {
@@ -400,179 +333,22 @@ namespace KingSurvivalGame
             }
         }
 
-        private static void MoveKingDownLeft()
+        private static void MovePawn(char pawnLetter, char horizontalDirection)
         {
-            int[] kingOldPosition = new int[2];
-            kingOldPosition[0] = kingPosition[0];
-            kingOldPosition[1] = kingPosition[1];
-
-            int[] kingNewPosition = new int[2];
-            kingNewPosition = CheckNextKingPosition(kingOldPosition, 'D', 'L');
-
-            if (kingNewPosition != null)
-            {
-                kingPosition[0] = kingNewPosition[0];
-                kingPosition[1] = kingNewPosition[1];
-            }
-        }
-
-        private static void MoveKingUpperRight()
-        {
-            int[] kingOldPosition = new int[2];
-            kingOldPosition[0] = kingPosition[0];
-            kingOldPosition[1] = kingPosition[1];
-
-            int[] kingNewPosition = new int[2];
-            kingNewPosition = CheckNextKingPosition(kingOldPosition, 'U', 'R');
-
-            if (kingNewPosition != null)
-            {
-                kingPosition[0] = kingNewPosition[0];
-                kingPosition[1] = kingNewPosition[1];
-            }
-        }
-
-        private static void MoveKingUpperLeft()
-        {
-            int[] kingOldPosition = new int[2];
-            kingOldPosition[0] = kingPosition[0];
-            kingOldPosition[1] = kingPosition[1];
-
-            int[] kingNewPosition = new int[2];
-            kingNewPosition = CheckNextKingPosition(kingOldPosition, 'U', 'L');
-
-            if (kingNewPosition != null)
-            {
-                kingPosition[0] = kingNewPosition[0];
-                kingPosition[1] = kingNewPosition[1];
-            }
-        }
-
-        private static void MovePawnDRight()
-        {
+            int pawnPosition = pawnLetter - 'A';
+            
             int[] pawnOldPosition = new int[2];
-            pawnOldPosition[0] = pawnsPositions[3, 0];
-            pawnOldPosition[1] = pawnsPositions[3, 1];
+            pawnOldPosition[0] = pawnsPositions[pawnPosition, 0];
+            pawnOldPosition[1] = pawnsPositions[pawnPosition, 1];
 
             int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'R', 'D');
+            pawnNewPosition = CheckNextPawnPositionAndMove(
+                pawnOldPosition, horizontalDirection, pawnLetter);
 
             if (pawnNewPosition != null)
             {
-                pawnsPositions[3, 0] = pawnNewPosition[0];
-                pawnsPositions[3, 1] = pawnNewPosition[1];
-            }
-        }
-
-        private static void MovePawnDLeft()
-        {
-            int[] pawnOldPosition = new int[2];
-            pawnOldPosition[0] = pawnsPositions[3, 0];
-            pawnOldPosition[1] = pawnsPositions[3, 1];
-
-            int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'L', 'D');
-
-            if (pawnNewPosition != null)
-            {
-                pawnsPositions[3, 0] = pawnNewPosition[0];
-                pawnsPositions[3, 1] = pawnNewPosition[1];
-            }
-        }
-
-        private static void MovePawnCRight()
-        {
-            int[] pawnOldPosition = new int[2];
-            pawnOldPosition[0] = pawnsPositions[2, 0];
-            pawnOldPosition[1] = pawnsPositions[2, 1];
-
-            int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'R', 'C');
-
-            if (pawnNewPosition != null)
-            {
-                pawnsPositions[1, 0] = pawnNewPosition[0];
-                pawnsPositions[1, 1] = pawnNewPosition[1];
-            }
-        }
-
-        private static void MovePawnCLeft()
-        {
-            int[] pawnOldPosition = new int[2];
-            pawnOldPosition[0] = pawnsPositions[2, 0];
-            pawnOldPosition[1] = pawnsPositions[2, 1];
-
-            int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'L', 'C');
-
-            if (pawnNewPosition != null)
-            {
-                pawnsPositions[2, 0] = pawnNewPosition[0];
-                pawnsPositions[2, 1] = pawnNewPosition[1];
-            }
-        }
-
-        private static void MovePawnBRight()
-        {
-            int[] pawnOldPosition = new int[2];
-            pawnOldPosition[0] = pawnsPositions[1, 0];
-            pawnOldPosition[1] = pawnsPositions[1, 1];
-
-            int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'R', 'B');
-
-            if (pawnNewPosition != null)
-            {
-                pawnsPositions[1, 0] = pawnNewPosition[0];
-                pawnsPositions[1, 1] = pawnNewPosition[1];
-            }
-        }
-
-        private static void MovePawnBLeft()
-        {
-            int[] pawnOldPosition = new int[2];
-            pawnOldPosition[0] = pawnsPositions[1, 0];
-            pawnOldPosition[1] = pawnsPositions[1, 1];
-
-            int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'L', 'B');
-
-            if (pawnNewPosition != null)
-            {
-                pawnsPositions[1, 0] = pawnNewPosition[0];
-                pawnsPositions[1, 1] = pawnNewPosition[1];
-            }
-        }
-
-        private static void MovePawnARight()
-        {
-            int[] pawnOldPosition = new int[2];
-            pawnOldPosition[0] = pawnsPositions[0, 0];
-            pawnOldPosition[1] = pawnsPositions[0, 1];
-
-            int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'R', 'A');
-
-            if (pawnNewPosition != null)
-            {
-                pawnsPositions[0, 0] = pawnNewPosition[0];
-                pawnsPositions[0, 1] = pawnNewPosition[1];
-            }
-        }
-
-        private static void MovePawnALeft()
-        {
-            int[] pawnOldPosition = new int[2];
-            pawnOldPosition[0] = pawnsPositions[0, 0];
-            pawnOldPosition[1] = pawnsPositions[0, 1];
-
-            int[] pawnNextPosition = new int[2];
-            pawnNextPosition = CheckNextPawnPositionAndMove(pawnOldPosition, 'L', 'A');
-
-            if (pawnNextPosition != null)
-            {
-                pawnsPositions[0, 0] = pawnNextPosition[0];
-                pawnsPositions[0, 1] = pawnNextPosition[1];
+                pawnsPositions[pawnPosition, 0] = pawnNewPosition[0];
+                pawnsPositions[pawnPosition, 1] = pawnNewPosition[1];
             }
         }
         #endregion
@@ -765,7 +541,7 @@ namespace KingSurvivalGame
                 if (input != null)
                 {
                     input = input.ToUpper();//! input =
-                    isExecuted = proverkaIProcess(input);
+                    ExecuteCommand(input, out isExecuted);
                 }
                 else
                 {
@@ -793,7 +569,7 @@ namespace KingSurvivalGame
                     // Console.WriteLine(input);
                     //Console.WriteLine("hahah");
                     input = input.ToUpper();//! input =
-                    isExecuted = proverkaIProcess(input);
+                    ExecuteCommand(input, out isExecuted);
                 }
                 else
                 {
