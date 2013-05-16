@@ -534,7 +534,7 @@ namespace KingSurvivalGame
         }
         #endregion
 
-        #region Part for refactoring. Author: ???
+        #region Part for refactoring. Author: tsetso
         static void ProcessKingSide()
         {
             bool isExecuted = false;
