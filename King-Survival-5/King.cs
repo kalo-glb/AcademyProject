@@ -291,7 +291,7 @@ namespace KingSurvivalGame
         /// <param name="isExecuted">If the move is made successfully return true, else false.</param>
         public static void ExecuteCommand(string command, out bool isExecuted)
         {
-            // Make it uppercase for test methods
+            // Make command in uppercase - for the tests
             command = command.ToUpper();
 
             bool isCommandExist = CheckCommandsExist(command);
@@ -309,7 +309,7 @@ namespace KingSurvivalGame
                 {
                     MovePawn(figureLetter, horizontalDirection);
                 }
-                
+
                 isExecuted = true;
             }
             else
@@ -341,17 +341,18 @@ namespace KingSurvivalGame
         {
             // 0 - A; 1 - B, 2 - C, 3 - D
             int pawnPosition = pawnLetter - 'A';
-            
+
             int[] pawnOldPosition = new int[2];
             pawnOldPosition[0] = pawnsPositions[pawnPosition, 0];
             pawnOldPosition[1] = pawnsPositions[pawnPosition, 1];
 
-            int[] pawnNewPosition = new int[2];
-            pawnNewPosition = CheckNextPawnPositionAndMove(
-                pawnOldPosition, horizontalDirection, pawnLetter);
+            int[] pawnNewPosition;
+            bool isThereNextPawnPosition = CheckNextPawnPosition(
+                pawnOldPosition, horizontalDirection,
+                pawnLetter, out pawnNewPosition);
 
             // If there are next valid position - move the pawn there
-            if (pawnNewPosition != null)
+            if (isThereNextPawnPosition)
             {
                 pawnsPositions[pawnPosition, 0] = pawnNewPosition[0];
                 pawnsPositions[pawnPosition, 1] = pawnNewPosition[1];
@@ -360,12 +361,11 @@ namespace KingSurvivalGame
         #endregion
 
         #region Part for refactoring. Author: Kaloqn
-
         /// <summary>
-        /// PROBABLY: check if the king can exit the field (at the top) from these coordinates
+        /// Check if the king can exit the field (at the top) from these coordinates
         /// </summary>
-        /// <param name="coordinatesToCheck"></param>
-        static void checkForKingExit(int coordinatesToCheck)
+        /// <param name="coordinatesToCheck">The coordinate to check from.</param>
+        private static void CheckForKingExit(int coordinatesToCheck)
         {
             if (coordinatesToCheck == 2)
             {
@@ -375,71 +375,69 @@ namespace KingSurvivalGame
             }
         }
 
-        static int[] CheckNextPawnPositionAndMove(int[] currentCoordinates, char checkDirection, char currentPawn)
+        /// <summary>
+        /// Check if there are any new position for the given pawn.
+        /// </summary>
+        /// <param name="currentCoordinates">The coordinates that the pawn is at that moment.</param>
+        /// <param name="checkDirection">The direction given from the command.</param>
+        /// <param name="currentPawn">Pawn letter.</param>
+        /// <param name="newCoords">If there are new position, the new coordinates are returned.</param>
+        private static bool CheckNextPawnPosition(
+            int[] currentCoordinates, char checkDirection,
+            char currentPawn, out int[] newCoords)
         {
+            newCoords = new int[2];
             int[] displasmentDownLeft = { 1, -2 };
             int[] displasmentDownRight = { 1, 2 };
-            int[] newCoords = new int[2];
 
             // if the direction is L - left
             if (checkDirection == 'L')
             {
                 newCoords[0] = currentCoordinates[0] + displasmentDownLeft[0];
                 newCoords[1] = currentCoordinates[1] + displasmentDownLeft[1];
-                if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
-                {
-                    movesCounter++;
-                    UpdateFigureSymbolOnTheField(currentCoordinates, newCoords);
-                    UpdatePawnExistingMoves(currentPawn);
-
-                    return newCoords;
-                }
-                else
-                {
-                    UpdatePawnExistingMoves(checkDirection, currentPawn);
-
-                    if (CheckIfAllAreFalse())
-                    {
-                        Console.WriteLine("King wins!");
-                        gameIsOver = true;
-                        return null;
-                    }
-
-                    Console.BackgroundColor = ConsoleColor.DarkYellow;
-                    Console.WriteLine("You can't go in this direction! ");
-                    Console.ResetColor();
-                    return null;
-                }
             }
             else  // if the direction is R - right
             {
                 newCoords[0] = currentCoordinates[0] + displasmentDownRight[0];
                 newCoords[1] = currentCoordinates[1] + displasmentDownRight[1];
-                if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
-                {
-                    movesCounter++;
-                    UpdateFigureSymbolOnTheField(currentCoordinates, newCoords);
-                    UpdatePawnExistingMoves(currentPawn);
-
-                    return newCoords;
-                }
-                else
-                {
-                    UpdatePawnExistingMoves(checkDirection, currentPawn);
-
-                    if (CheckIfAllAreFalse())
-                    {
-                        Console.WriteLine("King wins!");
-                        gameIsOver = true;
-                        return null;
-                    }
-
-                    Console.BackgroundColor = ConsoleColor.DarkYellow;
-                    Console.WriteLine("You can't go in this direction! ");
-                    Console.ResetColor();
-                    return null;
-                }
+                
             }
+
+            if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
+            {
+                movesCounter++;
+                UpdateFigureSymbolOnTheField(currentCoordinates, newCoords);
+                UpdatePawnExistingMoves(currentPawn);
+
+                return true;
+            }
+            else
+            {
+                UpdatePawnExistingMoves(checkDirection, currentPawn);
+
+                if (CheckIfAllAreFalse())
+                {
+                    Console.WriteLine("King wins!");
+                    gameIsOver = true;
+                    return false;
+                }
+
+                Console.BackgroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("You can't go in this direction! ");
+                Console.ResetColor();
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Updates the moves that the pawn can take (usualy calle after moving tha pawn)
+        /// </summary>
+        /// <param name="currentPawn">The pawn to be updated</param>
+        private static void UpdatePawnExistingMoves(char currentPawn)
+        {
+            int pawnNumber = currentPawn - 'A';
+            pawnExistingMoves[pawnNumber, 0] = true;
+            pawnExistingMoves[pawnNumber, 1] = true;
         }
 
         private static void UpdatePawnExistingMoves(char checkDirection, char currentPawn)
@@ -454,24 +452,8 @@ namespace KingSurvivalGame
                 pawnAvailableCell = 1;
             }
 
-            switch (currentPawn)
-            {
-                case 'A':
-                    pawnExistingMoves[0, pawnAvailableCell] = false;
-                    break;
-                case 'B':
-                    pawnExistingMoves[1, pawnAvailableCell] = false;
-                    break;
-                case 'C':
-                    pawnExistingMoves[2, pawnAvailableCell] = false;
-                    break;
-                case 'D':
-                    pawnExistingMoves[3, pawnAvailableCell] = false;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("Argumen must be one of: A, B, C or D");
-                    break;
-            }
+            int pawnNumber = currentPawn - 'A';
+            pawnExistingMoves[pawnNumber, pawnAvailableCell] = false;
         }
 
         private static bool CheckIfAllAreFalse()
@@ -492,40 +474,10 @@ namespace KingSurvivalGame
         }
 
         /// <summary>
-        /// updates the moves that the pawn can take (usualy calle after moving tha pawn)
+        /// Moves the game figures symbol (A, B, C, D or K) to its next position
         /// </summary>
-        /// <param name="currentPawn">the pawn to be updated</param>
-        private static void UpdatePawnExistingMoves(char currentPawn)
-        {
-            switch (currentPawn)
-            {
-                case 'A':
-                    pawnExistingMoves[0, 0] = true;
-                    pawnExistingMoves[0, 1] = true;
-                    break;
-                case 'B':
-                    pawnExistingMoves[1, 0] = true;
-                    pawnExistingMoves[1, 1] = true;
-                    break;
-                case 'C':
-                    pawnExistingMoves[2, 0] = true;
-                    pawnExistingMoves[2, 1] = true;
-                    break;
-                case 'D':
-                    pawnExistingMoves[3, 0] = true;
-                    pawnExistingMoves[3, 1] = true;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("Argumen must be one of ");
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// moves the game figures symbol (A, B, C, D or K) to its next position
-        /// </summary>
-        /// <param name="currentCoordinates">the coordinates the figure is currently on</param>
-        /// <param name="newCoords">the new coordinates for the figure</param>
+        /// <param name="currentCoordinates">The coordinates the figure is currently on</param>
+        /// <param name="newCoords">The new coordinates for the figure</param>
         private static void UpdateFigureSymbolOnTheField(int[] currentCoordinates, int[] newCoords)
         {
             char pawnSymbol = field[currentCoordinates[0], currentCoordinates[1]];
@@ -612,7 +564,7 @@ namespace KingSurvivalGame
                         {
                             kingExistingMoves[i] = true;
                         }
-                        checkForKingExit(newCoords[0]);
+                        CheckForKingExit(newCoords[0]);
                         return newCoords;
                     }
                     else
@@ -652,7 +604,7 @@ namespace KingSurvivalGame
                         {
                             kingExistingMoves[i] = true;
                         }
-                        checkForKingExit(newCoords[0]);
+                        CheckForKingExit(newCoords[0]);
                         return newCoords;
                     }
                     else
@@ -695,7 +647,7 @@ namespace KingSurvivalGame
                         {
                             kingExistingMoves[i] = true;
                         }
-                        checkForKingExit(newCoords[0]);
+                        CheckForKingExit(newCoords[0]);
                         return newCoords;
                     }
                     else
@@ -735,7 +687,7 @@ namespace KingSurvivalGame
                         {
                             kingExistingMoves[i] = true;
                         }
-                        checkForKingExit(newCoords[0]);
+                        CheckForKingExit(newCoords[0]);
                         return newCoords;
                     }
                     else
