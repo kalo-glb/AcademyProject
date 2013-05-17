@@ -26,29 +26,19 @@ namespace KingSurvivalGame
         };
 
         protected static int[] kingPosition = { 9, 10 };
+        protected static int[,] pawnsPositions = 
+        {
+            { 2, 4 }, { 2, 8 }, { 2, 12 }, { 2, 16 }
+        };
 
+        protected static bool[] kingExistingMoves = { true, true, true, true };
         protected static bool[,] pawnExistingMoves = 
         {
             { true, true }, { true, true }, { true, true }, { true, true }
         };
 
-        protected static string[] validKingInputs = { "KUL", "KUR", "KDL", "KDR" };
-        protected static bool[] kingExistingMoves = { true, true, true, true };
-
-        protected static string[] ValidPawnMovesForA = { "ADL", "ADR" };
-
-        protected static string[] ValidPawnMovesForB = { "BDL", "BDR" };
-
-        protected static string[] ValidPawnMovesForC = { "CDL", "CDR" };
-
-        protected static string[] ValidPawnMovesForD = { "DDL", "DDR" };
-
+        protected static string[] validInputs = { "KUL", "KUR", "KDL", "KDR", "ADL", "ADR", "BDL", "BDR", "CDL", "CDR", "DDL", "DDR" };
         protected static int movesCounter = 0;
-
         protected static bool gameIsOver = false;
-        protected static int[,] pawnsPositions = 
-        {
-            { 2, 4 }, { 2, 8 }, { 2, 12 }, { 2, 16 }
-        };
     }
 }

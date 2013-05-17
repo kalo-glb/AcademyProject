@@ -13,10 +13,15 @@ namespace KingSurvivalGame
         static bool CheckCoordinates(int[] positionCoordinates)
         {
             int firstCoordinates = positionCoordinates[0];
-            bool isFirstCoordinatesValid = (firstCoordinates >= gameEdges[0, 0]) && (firstCoordinates <= gameEdges[3, 0]);
+            bool isFirstCoordinatesValid = (firstCoordinates >= gameEdges[0, 0]) &&
+                (firstCoordinates <= gameEdges[3, 0]);
+
             int secondCoordinates = positionCoordinates[1];
-            bool isSecondCoordinatesValid = (secondCoordinates >= gameEdges[0, 1]) && (secondCoordinates <= gameEdges[3, 1]);
-            return isFirstCoordinatesValid && isSecondCoordinatesValid;
+            bool isSecondCoordinatesValid = (secondCoordinates >= gameEdges[0, 1]) &&
+                (secondCoordinates <= gameEdges[3, 1]);
+
+            bool result = isFirstCoordinatesValid && isSecondCoordinatesValid;
+            return result;
         }
 
         /// <summary>
@@ -94,19 +99,18 @@ namespace KingSurvivalGame
             if (gameIsOver)
             {
                 Console.WriteLine("Game is finished!");
-                return;
             }
             else
             {
                 if (moveCounter % 2 == 0)
                 {
                     GetField();
-                    ProcessKingSide();
+                    ProcessFigure('K');
                 }
                 else
                 {
                     GetField();
-                    ProcessPawnSide();
+                    ProcessFigure('P');
                 }
             }
         }
@@ -119,167 +123,26 @@ namespace KingSurvivalGame
         /// <returns>Return a boolean value false if command do not exist</returns>
         static bool CheckCommandsExist(string checkedString)
         {
-            if (movesCounter % 2 == 0)
+            bool isValid = false;
+            for (int i = 0; i < validInputs.Length; i++)
             {
-                int[] flag = new int[4];
-                for (int i = 0; i < validKingInputs.Length; i++)
+                string reference = validInputs[i];
+                int result = checkedString.CompareTo(reference);
+                if (result == 0)
                 {
-                    string reference = validKingInputs[i];
-                    int result = checkedString.CompareTo(reference);
-                    if (result != 0)
-                    {
-                        flag[i] = 0;
-                    }
-                    else
-                    {
-                        flag[i] = 1;
-                    }
-                }
-                bool hasAnEqual = false;
-                for (int i = 0; i < 4; i++)
-                {
-                    if (flag[i] == 1)
-                    {
-                        hasAnEqual = true;
-                    }
-                }
-                if (!hasAnEqual)
-                {
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid command name!");
-                    Console.ResetColor();
-                }
-                return hasAnEqual;
-            }
-            else
-            {
-                char startLetter = checkedString[0];
-                int[] checker = new int[2];
-                bool hasAnEqual = false;
-                switch (startLetter)
-                {
-                    case 'A':
-                        for (int i = 0; i < ValidPawnMovesForA.Length; i++)
-                        {
-                            string reference = ValidPawnMovesForA[i];
-                            int result = checkedString.CompareTo(reference);
-                            if (result != 0)
-                            {
-                                checker[i] = 0;
-                            }
-                            else
-                            {
-                                checker[i] = 1;
-                            }
-                        }
-                        for (int i = 0; i < 2; i++)
-                        {
-                            if (checker[i] == 1)
-                            {
-                                hasAnEqual = true;
-                            }
-                        }
-                        if (!hasAnEqual)
-                        {
-                            Console.BackgroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Invalid command name!");
-                            Console.ResetColor();
-                        }
-                        return hasAnEqual;
-
-                    case 'B':
-                        for (int i = 0; i < ValidPawnMovesForB.Length; i++)
-                        {
-                            string reference = ValidPawnMovesForB[i];
-                            int result = checkedString.CompareTo(reference);
-                            if (result != 0)
-                            {
-                                checker[i] = 0;
-                            }
-                            else
-                            {
-                                checker[i] = 1;
-                            }
-                        }
-                        for (int i = 0; i < 2; i++)
-                        {
-                            if (checker[i] == 1)
-                            {
-                                hasAnEqual = true;
-                            }
-                        }
-                        if (!hasAnEqual)
-                        {
-                            Console.BackgroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Invalid command name!");
-                            Console.ResetColor();
-                        }
-                        return hasAnEqual;
-                    case 'C':
-                        for (int i = 0; i < ValidPawnMovesForC.Length; i++)
-                        {
-                            string reference = ValidPawnMovesForC[i];
-                            int result = checkedString.CompareTo(reference);
-                            if (result != 0)
-                            {
-                                checker[i] = 0;
-                            }
-                            else
-                            {
-                                checker[i] = 1;
-                            }
-                        }
-                        for (int i = 0; i < 2; i++)
-                        {
-                            if (checker[i] == 1)
-                            {
-                                hasAnEqual = true;
-                            }
-                        }
-                        if (!hasAnEqual)
-                        {
-                            Console.BackgroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Invalid command name!");
-                            Console.ResetColor();
-                        }
-                        return hasAnEqual;
-
-                    case 'D':
-                        for (int i = 0; i < ValidPawnMovesForD.Length; i++)
-                        {
-                            string reference = ValidPawnMovesForD[i];
-                            int result = checkedString.CompareTo(reference);
-                            if (result != 0)
-                            {
-                                checker[i] = 0;
-                            }
-                            else
-                            {
-                                checker[i] = 1;
-                            }
-                        }
-                        for (int i = 0; i < 2; i++)
-                        {
-                            if (checker[i] == 1)
-                            {
-                                hasAnEqual = true;
-                            }
-                        }
-                        if (!hasAnEqual)
-                        {
-                            Console.BackgroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Invalid command name!");
-                            Console.ResetColor();
-                        }
-                        return hasAnEqual;
-
-                    default:
-                        Console.BackgroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Invalid command name!");
-                        Console.ResetColor();
-                        return false;
+                    isValid = true;
+                    break;
                 }
             }
+
+            if (!isValid)
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid command name!");
+                Console.ResetColor();
+            }
+
+            return isValid;
         }
         #endregion
 
@@ -325,12 +188,13 @@ namespace KingSurvivalGame
             kingOldPosition[0] = kingPosition[0];
             kingOldPosition[1] = kingPosition[1];
 
-            int[] kingNewPosition = new int[2];
-            kingNewPosition = CheckNextKingPosition(
-                kingOldPosition, verticalDirection, horizontalDirection);
+            int[] kingNewPosition;
+            bool isThereNextKingPosition = CheckNextKingPosition(
+                kingOldPosition, verticalDirection,
+                horizontalDirection, out kingNewPosition);
 
             // If there are next valid position - move the king there
-            if (kingNewPosition != null)
+            if (isThereNextKingPosition)
             {
                 kingPosition[0] = kingNewPosition[0];
                 kingPosition[1] = kingNewPosition[1];
@@ -400,7 +264,7 @@ namespace KingSurvivalGame
             {
                 newCoords[0] = currentCoordinates[0] + displasmentDownRight[0];
                 newCoords[1] = currentCoordinates[1] + displasmentDownRight[1];
-                
+
             }
 
             if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
@@ -487,235 +351,108 @@ namespace KingSurvivalGame
         #endregion
 
         #region Part for refactoring. Author: tsetso
-        static void ProcessKingSide()
+        static void ProcessFigure(char figureLetter)
         {
             bool isExecuted = false;
             while (!isExecuted)
             {
                 Console.BackgroundColor = ConsoleColor.DarkGreen;
-                Console.Write("Please enter king's turn: ");
+                if (figureLetter == 'K')
+                {
+                    Console.Write("Please enter king's turn: ");
+                }
+                else
+                {
+                    Console.Write("Please enter pawn's turn: ");
+                }
                 Console.ResetColor();
                 string input = Console.ReadLine();
                 if (input != null)
                 {
-                    input = input.ToUpper();//! input =
+                    input = input.ToUpper();
                     ExecuteCommand(input, out isExecuted);
                 }
-                else
-                {
-                    isExecuted = false;
-                    Console.BackgroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine("Please enter something!");
-                    Console.ResetColor();
-                }
             }
+
             Start(movesCounter);
         }
 
-        static void ProcessPawnSide()
+        static bool CheckNextKingPosition(
+            int[] currentCoordinates, char firstDirection,
+            char secondDirection, out int[] newCoords)
         {
-            bool isExecuted = false;
-            while (!isExecuted)
-            {
-                Console.BackgroundColor = ConsoleColor.Blue;
-                Console.Write("Please enter pawn's turn: ");
-                Console.ResetColor();
-                string input = Console.ReadLine();
-                //input = input.Trim();
-                if (input != null)//"/n")
-                {
-                    // Console.WriteLine(input);
-                    //Console.WriteLine("hahah");
-                    input = input.ToUpper();//! input =
-                    ExecuteCommand(input, out isExecuted);
-                }
-                else
-                {
-                    isExecuted = false;
-                    Console.BackgroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine("Please enter something!");
-                    Console.ResetColor();
-                }
-            }
-            Start(movesCounter);
-        }
-
-        static int[] CheckNextKingPosition(int[] currentCoordinates, char firstDirection, char secondDirection)
-        {
-            int[] displasmentDownLeft = { 1, -2 };
-            int[] displasmentDownRight = { 1, 2 };
-            int[] displasmentUpLeft = { -1, -2 };
-            int[] displasmentUpRight = { -1, 2 };
-            int[] newCoords = new int[2];
+            newCoords = new int[2];
+            int[,] displasments = new int[,] { { -1, -2 }, { -1, 2 }, { 1, -2 }, { 1, 2 } };
 
             if (firstDirection == 'U')
             {
                 if (secondDirection == 'L')
                 {
-                    newCoords[0] = currentCoordinates[0] + displasmentUpLeft[0];
-                    newCoords[1] = currentCoordinates[1] + displasmentUpLeft[1];
-                    if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
-                    {
-                        char sign = field[currentCoordinates[0], currentCoordinates[1]];
-                        field[currentCoordinates[0], currentCoordinates[1]] = ' ';
-                        field[newCoords[0], newCoords[1]] = sign;
-                        movesCounter++;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            kingExistingMoves[i] = true;
-                        }
-                        CheckForKingExit(newCoords[0]);
-                        return newCoords;
-                    }
-                    else
-                    {
-                        kingExistingMoves[0] = false;
-                        bool allAreFalse = true;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            if (kingExistingMoves[i] == true)
-                            {
-                                allAreFalse = false;
-                            }
-                        }
-                        if (allAreFalse)
-                        {
-                            gameIsOver = true;
-                            Console.WriteLine("King loses!");
-                            return null;
-                        }
-                        Console.BackgroundColor = ConsoleColor.DarkYellow;
-                        Console.WriteLine("You can't go in this direction! ");
-                        Console.ResetColor();
-                        return null;
-                    }
+                    return MakeKingTurn(0, newCoords, displasments, currentCoordinates);
                 }
                 else
                 {
-                    newCoords[0] = currentCoordinates[0] + displasmentUpRight[0];
-                    newCoords[1] = currentCoordinates[1] + displasmentUpRight[1];
-                    if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
-                    {
-                        char sign = field[currentCoordinates[0], currentCoordinates[1]];
-                        field[currentCoordinates[0], currentCoordinates[1]] = ' ';
-                        field[newCoords[0], newCoords[1]] = sign;
-                        movesCounter++;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            kingExistingMoves[i] = true;
-                        }
-                        CheckForKingExit(newCoords[0]);
-                        return newCoords;
-                    }
-                    else
-                    {
-                        kingExistingMoves[1] = false;
-                        bool allAreFalse = true;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            if (kingExistingMoves[i] == true)
-                            {
-                                allAreFalse = false;
-                            }
-                        }
-                        if (allAreFalse)
-                        {
-                            gameIsOver = true;
-                            Console.WriteLine("King loses!");
-                            return null;
-                        }
-                        Console.BackgroundColor = ConsoleColor.DarkYellow;
-                        Console.WriteLine("You can't go in this direction! ");
-                        Console.ResetColor();
-                        return null;
-                    }
+                    return MakeKingTurn(1, newCoords, displasments, currentCoordinates);
                 }
             }
             else
             {
                 if (secondDirection == 'L')
                 {
-                    newCoords[0] = currentCoordinates[0] + displasmentDownLeft[0];
-                    newCoords[1] = currentCoordinates[1] + displasmentDownLeft[1];
-                    if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
-                    {
-                        char sign = field[currentCoordinates[0], currentCoordinates[1]];
-                        field[currentCoordinates[0], currentCoordinates[1]] = ' ';
-                        field[newCoords[0], newCoords[1]] = sign;
-                        movesCounter++;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            kingExistingMoves[i] = true;
-                        }
-                        CheckForKingExit(newCoords[0]);
-                        return newCoords;
-                    }
-                    else
-                    {
-                        kingExistingMoves[2] = false;
-                        bool allAreFalse = true;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            if (kingExistingMoves[i] == true)
-                            {
-                                allAreFalse = false;
-                            }
-                        }
-                        if (allAreFalse)
-                        {
-                            gameIsOver = true;
-                            Console.WriteLine("King loses!");
-                            return null;
-                        }
-                        Console.BackgroundColor = ConsoleColor.DarkYellow;
-                        Console.WriteLine("You can't go in this direction! ");
-                        Console.ResetColor();
-                        return null;
-                    }
+                    return MakeKingTurn(2, newCoords, displasments, currentCoordinates);
                 }
                 else
                 {
-                    newCoords[0] = currentCoordinates[0] + displasmentDownRight[0];
-                    newCoords[1] = currentCoordinates[1] + displasmentDownRight[1];
-                    if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
-                    {
-                        char sign = field[currentCoordinates[0], currentCoordinates[1]];
-                        field[currentCoordinates[0], currentCoordinates[1]] = ' ';
-                        field[newCoords[0], newCoords[1]] = sign;
-                        movesCounter++;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            kingExistingMoves[i] = true;
-                        }
-                        CheckForKingExit(newCoords[0]);
-                        return newCoords;
-                    }
-                    else
-                    {
-                        kingExistingMoves[3] = false;
-                        bool allAreFalse = true;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            if (kingExistingMoves[i] == true)
-                            {
-                                allAreFalse = false;
-                            }
-                        }
-                        if (allAreFalse)
-                        {
-                            gameIsOver = true;
-                            Console.WriteLine("King loses!");
-                            return null;
-                        }
-                        Console.BackgroundColor = ConsoleColor.DarkYellow;
-                        Console.WriteLine("You can't go in this direction! ");
-                        Console.ResetColor();
-                        return null;
-                    }
+                    return MakeKingTurn(3, newCoords, displasments, currentCoordinates);
                 }
-                // checkForKingExit();
             }
         }
+
+        private static bool MakeKingTurn(int displasmentIndex, int[] newCoords,
+            int[,] displasments, int[] currentCoordinates)
+        {
+            newCoords[0] = currentCoordinates[0] + displasments[displasmentIndex, 0];
+            newCoords[1] = currentCoordinates[1] + displasments[displasmentIndex, 1];
+            if (CheckCoordinates(newCoords) && field[newCoords[0], newCoords[1]] == ' ')
+            {
+                char sign = field[currentCoordinates[0], currentCoordinates[1]];
+                field[currentCoordinates[0], currentCoordinates[1]] = ' ';
+                field[newCoords[0], newCoords[1]] = sign;
+                movesCounter++;
+                for (int i = 0; i < kingExistingMoves.Length; i++)
+                {
+                    kingExistingMoves[i] = true;
+                }
+
+                CheckForKingExit(newCoords[0]);
+                return true;
+            }
+            else
+            {
+                kingExistingMoves[displasmentIndex] = false;
+                bool allAreFalse = true;
+                for (int i = 0; i < kingExistingMoves.Length; i++)
+                {
+                    if (kingExistingMoves[i] == true)
+                    {
+                        allAreFalse = false;
+                    }
+                }
+
+                if (allAreFalse)
+                {
+                    gameIsOver = true;
+                    Console.WriteLine("King loses!");
+                    return false;
+                }
+
+                Console.BackgroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("You can't go in this direction! ");
+                Console.ResetColor();
+                return false;
+            }
+        }
+
         #endregion
 
         static void Main()
